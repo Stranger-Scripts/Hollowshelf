@@ -55,6 +55,11 @@ cover/
 *.mo
 *.pot
 
+# Hollowshelf local data (SQLite library + API cache)
+data/
+*.db
+book_cache.db
+
 # Django stuff:
 *.log
 local_settings.py
