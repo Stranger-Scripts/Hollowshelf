@@ -8,7 +8,8 @@ description = "A personal book library, built with NiceGUI."
 dependencies = [
     "nicegui>=3.13",
     "httpx>=0.27",
-    "pywebview>=6.2",
+    "pywebview>=6.2; sys_platform !='linux'", # Win -> pythonnet/WebView2, macOS -> pyobjc, auto
+    "pypwebview[qt6]>=6.2; sys_platform ==linux", # Linux -> PyQt6 + WebEngine
 ]
 
 [project.scripts]
@@ -20,3 +21,10 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[dependency-groups]
+dev = ["pyrefly", "ruff", "playright>=1.60"]
+
+#[tool.pyrefly]
+#python-interpreter = ".venv/bin/python"
+
