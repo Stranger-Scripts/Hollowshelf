@@ -7,16 +7,22 @@ Open Library / Google Books (or by hand), write markdown reviews and a dated
 reading journal. Data lives in a local SQLite database using the FTS5 schema in
 `collection_schema.sql`.
 
+## Requirements
+
+- **Python:** `>= 3.12` (Tested up to `3.14`)
+- **Platform-specific backends:** Automatically handled via `pyproject.toml` (`pywebview` native on Windows/macOS, `PyQt6` WebEngine on Linux).
+
 ## Run it
 
-```bash
-# 1. install dependencies (a virtualenv is recommended)
-pip install -e .
+This project uses `uv` for fast, reproducible dependency management.
 
-# 2. launch the native window
-hollowshelf
-#   …or, without installing:
-python run.py
+```bash
+# 1. Pin the Python version and sync dependencies into a virtual environment
+uv python pin 3.13
+uv sync
+
+# 2. Launch the native window application
+uv run hollowshelf
 ```
 
 On first launch you'll be asked for your name and email. These are stored
@@ -50,3 +56,12 @@ src/hollowshelf/
 - Audiobook/format detection from the APIs is only a hint — correct it in the form.
 - `native=True` uses `pywebview`; on Linux it needs a webview backend
   (e.g. `python3-gi gir1.2-webkit2-4.1`, or install `pywebview[qt]`).
+
+## Future Ideas 
+  - [ ] **Data Portability:** Add bulk import/export options from Goodreads or LibraryThing CSV files.
+  - [ ] **Data Export:** Add an option to export book tables and collections directly to an Excel sheet (`.xlsx`).
+  - [ ] **Document Export:** Allow exporting specific notes, reviews, or journals into clean `.md` or `.docx` formats using Pandoc.
+  - [ ] **Appearance:** Implement a native Dark Mode toggle utilizing NiceGUI's theme system.
+  - [ ] **Backups:** Add automated database backups to a secondary local directory or user-defined path.
+  - [ ] **Reading Stats:** Simple analytics dashboard (books read per year, top genres, reading streaks).
+  - [ ] **Translation:** Add multi-language support, starting with a native German translation.
