@@ -15,14 +15,25 @@ from .db import Database
 db: Database  # set by app.main()
 
 _client: Optional[BookClient] = None
-_client_contact: Optional[str] = None
+_client_signature: Optional[tuple] = None
+
+
+def _build_options() -> dict:
+    """Provider options: env defaults, overridden by anything saved in the UI."""
+    opts = config.book_client_options()
+    api_key = (db.get_setting("google_books_api_key", "") or "").strip()
+    if api_key:
+        opts["google_api_key"] = api_key
+    return opts
 
 
 def get_client() -> BookClient:
-    """Return a metadata client whose User-Agent uses the saved email."""
-    global _client, _client_contact
+    """Return a metadata client, rebuilt when the email or provider options change."""
+    global _client, _client_signature
     contact = db.get_profile().get("email") or None
-    if _client is None or contact != _client_contact:
+    options = _build_options()
+    signature = (contact, tuple(sorted(options.items())))
+    if _client is None or signature != _client_signature:
         if _client is not None:
             _client.close()
         _client = BookClient(
@@ -30,6 +41,7 @@ def get_client() -> BookClient:
             app_name=config.APP_NAME,
             app_version=config.APP_VERSION,
             contact=contact,
+            options=options,
         )
-        _client_contact = contact
+        _client_signature = signature
     return _client

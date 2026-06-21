@@ -32,7 +32,7 @@ def main() -> None:
     app.on_shutdown(state.db.close)
     _register_pages()
     ui.run(
-        native=False,
+        native=True,
         reload=False,
         title=config.APP_NAME,
         port=8003,
