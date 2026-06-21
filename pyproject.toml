@@ -25,6 +25,6 @@ where = ["src"]
 [dependency-groups]
 dev = ["pyrefly", "ruff", "playwright>=1.60"]
 
-#[tool.pyrefly]
-#python-interpreter = ".venv/bin/python"
+[tool.pyrefly]
+python-interpreter = ".venv/bin/python"
 

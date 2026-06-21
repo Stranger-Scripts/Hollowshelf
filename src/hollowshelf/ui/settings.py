@@ -49,6 +49,30 @@ def render() -> None:
             with ui.row().classes("w-full justify-end"):
                 ui.button("Save", icon="save", on_click=save)
 
+        with ui.card().classes("w-full gap-3"):
+            ui.label("Google Books").classes("text-lg font-semibold")
+            ui.label(
+                "Optional. Without a key, Google Books shares a small daily quota "
+                "that runs out (lookups then quietly return nothing). Add your own "
+                "free key — enable the Books API in the Google Cloud console — to "
+                "raise it. Stored locally in your library database."
+            ).classes("text-sm opacity-80")
+            api_key = ui.input(
+                "API key",
+                value=state.db.get_setting("google_books_api_key", "") or "",
+                password=True,
+                password_toggle_button=True,
+            ).classes("w-full")
+
+            def save_key() -> None:
+                state.db.set_setting(
+                    "google_books_api_key", (api_key.value or "").strip()
+                )
+                ui.notify("Saved", type="positive")
+
+            with ui.row().classes("w-full justify-end"):
+                ui.button("Save", icon="save", on_click=save_key)
+
         with ui.card().classes("w-full gap-1"):
             ui.label("Storage").classes("text-lg font-semibold")
             ui.label(f"Library database: {config.DB_PATH}") \
