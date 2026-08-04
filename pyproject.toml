@@ -22,8 +22,16 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+hollowshelf = ["locales/*/LC_MESSAGES/*.mo", "locales/*/LC_MESSAGES/*.po"]
+
 [dependency-groups]
-dev = ["pyrefly", "ruff", "playwright>=1.60"]
+dev = [
+    "pyrefly",
+    "ruff",
+    "playwright>=1.60",
+    "babel>=2.18.0",
+]
 
 [tool.pyrefly]
 python-interpreter = ".venv/bin/python"
