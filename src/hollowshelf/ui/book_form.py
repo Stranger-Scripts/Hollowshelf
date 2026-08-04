@@ -8,6 +8,7 @@ from nicegui import run, ui
 
 from .. import state
 from ..book_client import BookResult
+from ..i18n import _
 from . import common
 
 _MEDIA_TO_FORMAT = {"print": "physical", "ebook": "ebook", "audiobook": "audiobook"}
@@ -21,14 +22,15 @@ def render(book_id: Optional[int]) -> None:
     book = state.db.get_book(book_id) if book_id is not None else None
     if book_id is not None and book is None:
         with ui.column().classes("w-full max-w-screen-md mx-auto p-6 gap-3"):
-            ui.label("That book no longer exists.").classes("text-lg")
-            ui.button("Back to library", on_click=lambda: ui.navigate.to("/"))
+            ui.label(_("That book no longer exists.")).classes("text-lg")
+            ui.button(_("Back to library"), on_click=lambda: ui.navigate.to("/"))
         return
 
     f: dict[str, object] = {}
 
     with ui.column().classes("w-full max-w-screen-lg mx-auto p-4 gap-4"):
-        ui.label("Add a book" if book is None else f"Edit · {book['title']}") \
+        ui.label(_("Add a book") if book is None
+                 else _("Edit · {title}").format(title=book["title"])) \
             .classes("text-2xl font-bold")
 
         if book is None:
@@ -44,20 +46,20 @@ def render(book_id: Optional[int]) -> None:
 # --------------------------------------------------------------------------- #
 
 def _lookup_card(f: dict) -> None:
-    with ui.expansion("Look up metadata (Open Library / Google Books)",
+    with ui.expansion(_("Look up metadata (Open Library / Google Books)"),
                       icon="search", value=True).classes("w-full border rounded"):
         with ui.column().classes("w-full p-2 gap-3"):
             with ui.row().classes("w-full items-end gap-2"):
                 isbn = ui.input("ISBN", placeholder="978…").classes("grow")
-                isbn_btn = ui.button("Search ISBN", icon="search")
+                isbn_btn = ui.button(_("Search ISBN"), icon="search")
             with ui.row().classes("w-full items-end gap-2"):
-                title = ui.input("Title").classes("grow")
-                author = ui.input("Author").classes("w-48")
+                title = ui.input(_("Title")).classes("grow")
+                author = ui.input(_("Author")).classes("w-48")
                 lang = ui.select(
-                    {None: "Any", "en": "English", "de": "German"},
-                    value=None, label="Language",
+                    {None: _("Any"), "en": _("English"), "de": _("German")},
+                    value=None, label=_("Language"),
                 ).classes("w-32")
-                title_btn = ui.button("Search title", icon="search")
+                title_btn = ui.button(_("Search title"), icon="search")
 
             spinner = ui.spinner(size="lg")
             spinner.visible = False
@@ -67,7 +69,7 @@ def _lookup_card(f: dict) -> None:
                 results.clear()
                 if not items:
                     with results:
-                        ui.label("No matches (or the API was unreachable).") \
+                        ui.label(_("No matches (or the API was unreachable).")) \
                             .classes("text-sm opacity-70")
                     return
                 with results:
@@ -115,7 +117,7 @@ def _result_card(res: BookResult, f: dict) -> None:
                     str(x) for x in (res.year, res.media, res.source) if x
                 )
                 ui.label(meta).classes("text-xs opacity-70")
-            ui.button("Use", icon="check",
+            ui.button(_("Use"), icon="check",
                       on_click=lambda r=res: _apply(r, f)).props("outline")
 
 
@@ -131,7 +133,7 @@ def _apply(res: BookResult, f: dict) -> None:
     f["page_count"].value = res.page_count
     if res.media in _MEDIA_TO_FORMAT:
         f["format"].value = _MEDIA_TO_FORMAT[res.media]
-    ui.notify(f"Filled from “{res.title}”")
+    ui.notify(_("Filled from “{title}”").format(title=res.title))
 
 
 # --------------------------------------------------------------------------- #
@@ -143,87 +145,89 @@ def _form_card(f: dict, book: Optional[dict]) -> None:
     with ui.card().classes("w-full gap-3"):
         with ui.row().classes("w-full gap-3 no-wrap"):
             with ui.column().classes("grow gap-3"):
-                f["title"] = ui.input("Title", value=b.get("title", "")) \
+                f["title"] = ui.input(_("Title"), value=b.get("title", "")) \
                     .classes("w-full")
-                f["subtitle"] = ui.input("Subtitle", value=b.get("subtitle") or "") \
+                f["subtitle"] = ui.input(_("Subtitle"), value=b.get("subtitle") or "") \
                     .classes("w-full")
                 f["authors"] = ui.textarea(
-                    "Authors (one per line)",
+                    _("Authors (one per line)"),
                     value="\n".join(b.get("authors", [])),
                 ).classes("w-full")
                 f["narrators"] = ui.textarea(
-                    "Narrators (one per line, optional)",
+                    _("Narrators (one per line, optional)"),
                     value="\n".join(b.get("narrators", [])),
                 ).classes("w-full")
                 f["genres"] = ui.input(
-                    "Genres (comma-separated)",
+                    _("Genres (comma-separated)"),
                     value=", ".join(b.get("genres", [])),
                 ).classes("w-full")
             # Cover preview (bound to the URL field once it exists, below).
             with ui.column().classes("items-center gap-1"):
-                ui.label("Cover").classes("text-xs opacity-60")
+                ui.label(_("Cover")).classes("text-xs opacity-60")
                 cover = ui.image().classes(
                     "w-32 h-48 object-cover rounded border"
                 )
 
         with ui.row().classes("w-full gap-3 flex-wrap"):
             f["format"] = ui.select(
-                common.FORMATS, value=b.get("format", "physical"), label="Format",
+                common.formats(), value=b.get("format", "physical"),
+                label=_("Format"),
             ).classes("w-40")
             f["read_status"] = ui.select(
-                common.READ_STATUS, value=b.get("read_status", "unread"),
-                label="Status",
+                common.read_statuses(), value=b.get("read_status", "unread"),
+                label=_("Status"),
             ).classes("w-40")
             f["rating"] = ui.select(
-                common.RATINGS, value=b.get("rating") or 0, label="Rating",
+                common.RATINGS, value=b.get("rating") or 0, label=_("Rating"),
             ).classes("w-32")
             f["language"] = ui.input(
-                "Language code", value=b.get("language") or "",
+                _("Language code"), value=b.get("language") or "",
             ).props("placeholder=en, de…").classes("w-32")
 
         with ui.row().classes("w-full gap-3 flex-wrap"):
             f["isbn13"] = ui.input("ISBN-13", value=b.get("isbn13") or "") \
                 .classes("w-48")
-            f["publisher"] = ui.input("Publisher", value=b.get("publisher") or "") \
+            f["publisher"] = ui.input(_("Publisher"), value=b.get("publisher") or "") \
                 .classes("w-56")
             f["publication_date"] = ui.input(
-                "Published", value=b.get("publication_date") or "",
+                _("Published"), value=b.get("publication_date") or "",
             ).props("placeholder=YYYY or YYYY-MM-DD").classes("w-40")
             f["acquired_date"] = ui.input(
-                "Acquired", value=b.get("acquired_date") or "",
+                _("Acquired"), value=b.get("acquired_date") or "",
             ).props("placeholder=YYYY-MM-DD").classes("w-40")
 
         with ui.row().classes("w-full gap-3 flex-wrap"):
             f["page_count"] = ui.number(
-                "Pages", value=b.get("page_count"), format="%d",
+                _("Pages"), value=b.get("page_count"), format="%d",
             ).classes("w-32")
             f["duration_minutes"] = ui.number(
-                "Duration (min)", value=b.get("duration_minutes"), format="%d",
+                _("Duration (min)"), value=b.get("duration_minutes"), format="%d",
             ).classes("w-40")
             f["file_format"] = ui.input(
-                "File format", value=b.get("file_format") or "",
+                _("File format"), value=b.get("file_format") or "",
             ).props("placeholder=EPUB, MP3…").classes("w-40")
-            f["series"] = ui.input("Series", value=b.get("series") or "") \
+            f["series"] = ui.input(_("Series"), value=b.get("series") or "") \
                 .classes("w-56")
             f["series_position"] = ui.number(
-                "Series #", value=b.get("series_position"), format="%g",
+                _("Series #"), value=b.get("series_position"), format="%g",
             ).classes("w-28")
 
         with ui.row().classes("w-full gap-3 flex-wrap"):
             f["location"] = ui.input(
-                "Location", value=b.get("location") or "",
-            ).props("placeholder=Shelf B3, Kindle, Audible…").classes("grow")
+                _("Location"), value=b.get("location") or "",
+                placeholder=_("Shelf B3, Kindle, Audible…"),
+            ).classes("grow")
             f["cover_image_url"] = ui.input(
-                "Cover image URL", value=b.get("cover_image_url") or "",
+                _("Cover image URL"), value=b.get("cover_image_url") or "",
             ).classes("grow")
 
         # Wire the cover preview to the URL field.
         cover.bind_source_from(f["cover_image_url"], "value")
 
         f["description"] = _markdown_field(
-            "Description", b.get("description") or ""
+            _("Description"), b.get("description") or ""
         )
-        f["review"] = _markdown_field("Review", b.get("review") or "")
+        f["review"] = _markdown_field(_("Review"), b.get("review") or "")
 
 
 def _markdown_field(label: str, value: str):
@@ -277,41 +281,41 @@ def _collect(f: dict) -> dict:
 
 def _action_row(f: dict, book_id: Optional[int]) -> None:
     with ui.row().classes("w-full justify-between"):
-        ui.button("Cancel", on_click=lambda: ui.navigate.to("/")).props("flat")
+        ui.button(_("Cancel"), on_click=lambda: ui.navigate.to("/")).props("flat")
         with ui.row().classes("gap-2"):
             if book_id is not None:
-                ui.button("Delete", icon="delete", color="negative",
+                ui.button(_("Delete"), icon="delete", color="negative",
                           on_click=lambda: _confirm_delete(book_id)).props("outline")
-            ui.button("Save", icon="save", on_click=lambda: _save(f, book_id))
+            ui.button(_("Save"), icon="save", on_click=lambda: _save(f, book_id))
 
 
 def _save(f: dict, book_id: Optional[int]) -> None:
     data = _collect(f)
     if not (data["title"] or "").strip():
-        ui.notify("Title is required", type="warning")
+        ui.notify(_("Title is required"), type="warning")
         return
     if book_id is None:
         new_id = state.db.create_book(data)
-        ui.notify("Book added", type="positive")
+        ui.notify(_("Book added"), type="positive")
         ui.navigate.to(f"/book/{new_id}")
     else:
         state.db.update_book(book_id, data)
-        ui.notify("Saved", type="positive")
+        ui.notify(_("Saved"), type="positive")
 
 
 def _confirm_delete(book_id: int) -> None:
     with ui.dialog() as dialog, ui.card().classes("gap-3"):
-        ui.label("Delete this book and all its notes?")
+        ui.label(_("Delete this book and all its notes?"))
         with ui.row().classes("w-full justify-end gap-2"):
-            ui.button("Cancel", on_click=dialog.close).props("flat")
+            ui.button(_("Cancel"), on_click=dialog.close).props("flat")
 
             def do() -> None:
                 state.db.delete_book(book_id)
                 dialog.close()
-                ui.notify("Deleted")
+                ui.notify(_("Deleted"))
                 ui.navigate.to("/")
 
-            ui.button("Delete", color="negative", on_click=do)
+            ui.button(_("Delete"), color="negative", on_click=do)
     dialog.open()
 
 
@@ -321,20 +325,21 @@ def _confirm_delete(book_id: int) -> None:
 
 def _journal_card(book_id: int) -> None:
     with ui.card().classes("w-full gap-3"):
-        ui.label("Reading journal").classes("text-lg font-semibold")
+        ui.label(_("Reading journal")).classes("text-lg font-semibold")
         notes_box = ui.column().classes("w-full gap-2")
 
         def refresh() -> None:
             notes_box.clear()
             notes = state.db.list_notes(book_id)
+            labels = common.entry_types()
             with notes_box:
                 if not notes:
-                    ui.label("No notes yet.").classes("text-sm opacity-70")
+                    ui.label(_("No notes yet.")).classes("text-sm opacity-70")
                 for n in notes:
                     with ui.card().classes("w-full bg-gray-50 dark:bg-gray-800"):
                         with ui.row().classes("w-full justify-between items-center"):
                             ui.label(
-                                f"{common.ENTRY_TYPES.get(n['entry_type'], n['entry_type'])}"
+                                f"{labels.get(n['entry_type'], n['entry_type'])}"
                                 f" · {n['note_date']}"
                             ).classes("text-xs opacity-70")
                             ui.button(
@@ -345,7 +350,7 @@ def _journal_card(book_id: int) -> None:
 
         with ui.row().classes("w-full items-end gap-2"):
             entry_type = ui.select(
-                common.ENTRY_TYPES, value="note", label="Type",
+                common.entry_types(), value="note", label=_("Type"),
             ).classes("w-40")
         editor = ui.codemirror(
             language="markdown", line_wrapping=True,
@@ -354,14 +359,14 @@ def _journal_card(book_id: int) -> None:
         def add() -> None:
             content = (editor.value or "").strip()
             if not content:
-                ui.notify("Write something first", type="warning")
+                ui.notify(_("Write something first"), type="warning")
                 return
             state.db.add_note(book_id, entry_type.value, content)
             editor.value = ""
             refresh()
-            ui.notify("Note added", type="positive")
+            ui.notify(_("Note added"), type="positive")
 
-        ui.button("Add note", icon="add", on_click=add)
+        ui.button(_("Add note"), icon="add", on_click=add)
         refresh()
 
 
