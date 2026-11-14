@@ -95,7 +95,7 @@ These block or shape requirements. Each one should end up in DECISIONS.md.
   - `Blocked`: an external constraint prevents it
   - `Withdrawn`: no longer required
 - **Verify:** `T` = automated test · `M` = manual check, recorded in the PR
-- *Status as of 2026-11-14, taken from branch `de-translation` @ `7c2a910`. No test suite exists yet, so nothing is `Verified`.*
+- *Status as of 2026-11-14, taken from branch `de-translation` @ `7c2a910`. The only tests so far cover the DB layer (M0 task 0.4), so nothing else is `Verified`.*
 
 ---
 
@@ -433,7 +433,7 @@ Pri **M** · M1 · Status `Open` · Verify T
 | NFR-003 | **Performance (proposed, OD-7):** with 5,000 items, the grid loads in under 1 s and search returns in under 200 ms on the dev machine. | S | M1 | Open | T (benchmark) |
 | NFR-004 | **Platforms** *(amended, D-012)*: Linux and Windows 10/11 are supported; macOS depends on OD-1. CI runs on `ubuntu-latest` and `windows-latest` **from M1**. Each release gets a manual smoke test on Windows (window opens via WebView2, CRUD, lookup, scan, backup). | M | M1 (CI) / M4 (full) | Partial (Linux only) | T + M |
 | NFR-005 | **Zero ops:** no server process, no external service that has to be running, no config needed to start. | M | M1 | Impl. | M |
-| NFR-006 | **Maintainability:** `ruff check` and `ruff format --check` pass. The DB layer and the API parsers have automated tests. CI is green on `main`. | M | M0 | **Open: CI currently fails** | T |
+| NFR-006 | **Maintainability:** `ruff check` and `ruff format --check` pass. The DB layer and the API parsers have automated tests. CI is green on `main`. | M | M0 | `Partial` (ruff green, DB layer tested; **API parser tests outstanding**) | T |
 
 ## 8. Release requirements
 
