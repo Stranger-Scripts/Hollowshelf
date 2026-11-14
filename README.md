@@ -57,11 +57,14 @@ src/hollowshelf/
 - `native=True` uses `pywebview`; on Linux it needs a webview backend
   (e.g. `python3-gi gir1.2-webkit2-4.1`, or install `pywebview[qt]`).
 
-## Future Ideas 
-  - [ ] **Data Portability:** Add bulk import/export options from Goodreads or LibraryThing CSV files.
-  - [ ] **Data Export:** Add an option to export book tables and collections directly to an Excel sheet (`.xlsx`).
-  - [ ] **Document Export:** Allow exporting specific notes, reviews, or journals into clean `.md` or `.docx` formats using Pandoc.
-  - [ ] **Appearance:** Implement a native Dark Mode toggle utilizing NiceGUI's theme system.
-  - [ ] **Backups:** Add automated database backups to a secondary local directory or user-defined path.
-  - [ ] **Reading Stats:** Simple analytics dashboard (books read per year, top genres, reading streaks).
-  - [ ] **Translation:** Add multi-language support, starting with a native German translation.
+## Roadmap
+
+What's planned, in what order, and the rules for getting it in — all under [`docs/`](docs/):
+
+- [URS.md](docs/URS.md) — the requirements: IDs, priorities, acceptance criteria, status
+- [ROADMAP.md](docs/ROADMAP.md) — which milestone each requirement lands in, plus the Parking Lot
+- [GUIDELINES.md](docs/GUIDELINES.md) — scope gate, Definition of Done, branching and commits
+- [DECISIONS.md](docs/DECISIONS.md) — the decision log
+
+The ideas previously listed here are now tracked as requirements, or parked in the
+[Parking Lot](docs/ROADMAP.md#parking-lot-not-scheduled).

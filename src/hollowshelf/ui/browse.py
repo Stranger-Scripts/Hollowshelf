@@ -5,10 +5,11 @@ from __future__ import annotations
 from nicegui import ui
 
 from .. import state
+from ..i18n import _, ngettext
 from . import common
 
 
-def _to_row(book: dict) -> dict:
+def _to_row(book: dict, fmts: dict, stats: dict) -> dict:
     rating = book.get("rating")
     pub = book.get("publication_date") or ""
     return {
@@ -16,8 +17,8 @@ def _to_row(book: dict) -> dict:
         "title": book["title"],
         "authors": book.get("authors") or "",
         "series": book.get("series") or "",
-        "format": common.FORMATS.get(book["format"], book["format"]),
-        "status": common.READ_STATUS.get(book["read_status"], book["read_status"]),
+        "format": fmts.get(book["format"], book["format"]),
+        "status": stats.get(book["read_status"], book["read_status"]),
         "rating": "★" * rating if rating else "",
         "year": pub[:4],
     }
@@ -29,40 +30,40 @@ def render() -> None:
         return
 
     with ui.column().classes("w-full max-w-screen-xl mx-auto p-4 gap-4"):
-        ui.label("Library").classes("text-2xl font-bold")
+        ui.label(_("Library")).classes("text-2xl font-bold")
 
         with ui.row().classes("w-full items-end gap-3"):
             search = ui.input(
-                "Search", placeholder="title, author, description, notes…"
+                _("Search"), placeholder=_("title, author, description, notes…")
             ).props("clearable").classes("grow")
             status = ui.select(
-                {None: "Any status", **common.READ_STATUS},
-                value=None, label="Status",
+                {None: _("Any status"), **common.read_statuses()},
+                value=None, label=_("Status"),
             ).classes("w-40")
             fmt = ui.select(
-                {None: "Any format", **common.FORMATS},
-                value=None, label="Format",
+                {None: _("Any format"), **common.formats()},
+                value=None, label=_("Format"),
             ).classes("w-40")
-            ui.button("Add book", icon="add",
+            ui.button(_("Add book"), icon="add",
                       on_click=lambda: ui.navigate.to("/book/new"))
 
         count = ui.label().classes("text-sm opacity-70")
 
         grid = ui.aggrid({
             "columnDefs": [
-                {"headerName": "Title", "field": "title", "flex": 2,
+                {"headerName": _("Title"), "field": "title", "flex": 2,
                  "sortable": True, "filter": True},
-                {"headerName": "Author(s)", "field": "authors", "flex": 2,
+                {"headerName": _("Author(s)"), "field": "authors", "flex": 2,
                  "sortable": True, "filter": True},
-                {"headerName": "Series", "field": "series", "flex": 1,
+                {"headerName": _("Series"), "field": "series", "flex": 1,
                  "sortable": True},
-                {"headerName": "Format", "field": "format", "width": 120,
+                {"headerName": _("Format"), "field": "format", "width": 120,
                  "sortable": True},
-                {"headerName": "Status", "field": "status", "width": 130,
+                {"headerName": _("Status"), "field": "status", "width": 130,
                  "sortable": True},
-                {"headerName": "Rating", "field": "rating", "width": 110,
+                {"headerName": _("Rating"), "field": "rating", "width": 110,
                  "sortable": True},
-                {"headerName": "Year", "field": "year", "width": 90,
+                {"headerName": _("Year"), "field": "year", "width": 90,
                  "sortable": True},
             ],
             "rowData": [],
@@ -71,10 +72,11 @@ def render() -> None:
 
         def refresh() -> None:
             books = state.db.list_books(search.value, status.value, fmt.value)
-            grid.options["rowData"] = [_to_row(b) for b in books]
+            fmts, stats = common.formats(), common.read_statuses()
+            grid.options["rowData"] = [_to_row(b, fmts, stats) for b in books]
             grid.update()
             n = len(books)
-            count.text = f"{n} book{'s' if n != 1 else ''}"
+            count.text = ngettext("%d book", "%d books", n) % n
 
         search.on("update:model-value", lambda: refresh())
         status.on("update:model-value", lambda: refresh())
@@ -89,4 +91,4 @@ def render() -> None:
         )
 
         refresh()
-        ui.label("Double-click a row to open a book.").classes("text-xs opacity-60")
+        ui.label(_("Double-click a row to open a book.")).classes("text-xs opacity-60")
