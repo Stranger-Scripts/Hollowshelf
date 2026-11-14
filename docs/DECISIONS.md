@@ -1,0 +1,24 @@
+# Hollowshelf: Decision Log
+
+> Lightweight ADRs. An entry is never deleted. If a decision changes, it gets
+> marked *Superseded by D-xxx*.
+> D-001…D-006 and D-008 are carried over from earlier design discussions (2026-08/09).
+
+| ID | Date | Decision | Rationale | Status |
+|----|------|----------|-----------|--------|
+| D-001 | 2026-09 | Markdown is stored as plain `TEXT`; rendering is a UI concern. | Every database stores markdown the same way, so no special storage is needed. | Accepted |
+| D-002 | 2026-09 | Single SQLite database (+ FTS5). No document DB. | A second store means two backups, cross-system ID sync and no JOINs, with no benefit at this scale. | Accepted |
+| D-003 | 2026-09 | No PostgreSQL. | It brings back a server process, which only pays off for a hosted multi-device app (see NG-02). | Accepted |
+| D-004 | 2026-09 | NiceGUI over DearPyGui. | Native `ui.markdown` + CodeMirror make a split-pane editor cheap; AG Grid; URL-based covers; works with `run.io_bound()`; `native=True`. | Accepted |
+| D-005 | 2026-09 | Blocking HTTP always goes through `run.io_bound()`. | Keeps the UI event loop from freezing. | Accepted |
+| D-006 | 2026-09 | Format detected from APIs is a hint shown in an editable dropdown. | No free API gives reliable audiobook/format metadata. | Accepted |
+| D-007 | 2026-11-14 | **Deployment: native desktop app, single user, single machine.** Hosting on Forge or as a web app is out of scope (NG-02, NG-03). | Fits the original "no server, low ops" constraint and keeps v1.0 finishable. | Accepted |
+| D-008 | 2026-09 | One `book` row per owned item (no work/copy split); contributors, genres, series and publishers are normalised lookups. | The split isn't justified at personal scale; the schema comment says a later split migrates cleanly. | **Under review: OD-2** |
+| D-009 | 2026-11-14 | Requirements are governed by URS + roadmap + scope gate (these docs). | Counters feature creep and the lack of a clear end state. | Accepted |
+| D-010 | 2026-08 | `uv` for environments, src-layout, PEP 508 platform markers for the webview backend. | Reproducible installs; replaced conda for this pure-Python project. | Accepted |
+| D-011 | 2026-11-14 | **Scope extended with a wishlist** of items not yet owned. The data model follows OD-2. | Owner request; it reuses the lookup and scan flow. | Accepted |
+| D-012 | 2026-11-14 | **Windows is a supported platform** alongside Linux (OD-1 partly resolved; macOS still open). | Owner request. Windows CI is added from M1, so path and backend problems show up early. | Accepted |
+| D-013 | 2026-11-14 | Amazon, Goodreads and Kobo **won't** be metadata sources for v1.0 (LKP-012…014). No scraping (NG-08). | Amazon's Creators API needs an Associates account with qualified sales; Goodreads closed its API in 2020; no public Kobo API was found. | **Superseded by D-016** |
+| D-014 | 2026-11-14 | The update check **notifies only** and never installs (NG-09). | Self-update across OSes and install methods is a large, risky scope for a single-user tool. | Proposed (confirm with OD-12) |
+| D-015 | 2026-11-14 | The UI overhaul is the **last** milestone, after feature freeze and distribution. | Owner request: avoid redesigning screens that are still changing. | Accepted |
+| D-016 | 2026-11-14 | **Metadata sources for v1.0: Open Library, Google Books, ISFDB (keyless) and Hardcover (opt-in, free personal token).** Everything else is removed for now. Scraper-type sources (Amazon, Goodreads, Kobo, …) move from non-goal to a Parking Lot *maybe* (NG-08 withdrawn). Paid and membership-only APIs are out of scope (NG-10). | Keeps the source set to free, documented APIs. ISFDB fits a speculative-fiction-heavy library. Scraping stays possible later but isn't committed. | Accepted |
