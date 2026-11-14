@@ -169,3 +169,4 @@ Nothing here gets built before v1.0 unless it is promoted through the scope gate
 | — | Other scanner inputs besides the webcam (you said "webcam *for now*") | 2026-11-14 |
 | — | **Maybe: scraper-type sources** (Amazon, Goodreads, Kobo, Moly, Biblio, …). Promoting one needs a decision on terms of service, breakage and maintenance cost. | 2026-11-14 (D-016) |
 | — | Other sources evaluated and parked (Apple/iTunes, WorldCat, Libris, BnF, DNB, ISBNPlus, paid APIs); see [notes/metadata-sources.md](notes/metadata-sources.md) | 2026-11-14 |
+| — | **Upgrade to NiceGUI 4.x.** A resolve during task 0.4 pulled 4.0.0 in unasked, so `nicegui` is pinned `<4` in `pyproject.toml`. 4.0 is a major rewrite: promote this only with time to re-verify every page. Natural home is M5 (UI-005). | 2026-11-14 (task 0.4) |
