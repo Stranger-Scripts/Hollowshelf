@@ -62,6 +62,9 @@ data/
 *.db
 book_cache.db
 
+# NiceGUI per-client storage (app.storage.user), created on run
+.nicegui/
+
 # Django stuff:
 *.log
 local_settings.py
