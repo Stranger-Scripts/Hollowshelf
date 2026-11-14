@@ -6,7 +6,7 @@ requires-python = ">=3.12"
 readme = "README.md"
 description = "A personal book library, built with NiceGUI."
 dependencies = [
-    "nicegui>=3.13",
+    "nicegui>=3.19.0,<4", # 4.0 is a major rewrite; upgrade deliberately, not by resolve
     "httpx>=0.27",
     "pywebview>=6.2 ; sys_platform != 'linux'", # Win -> pythonnet/WebView2, macOS -> pyobjc, auto
     "pywebview[qt6]>=6.2 ; sys_platform == 'linux'", # Linux -> PyQt6 + WebEngine
@@ -28,10 +28,15 @@ hollowshelf = ["locales/*/LC_MESSAGES/*.mo", "locales/*/LC_MESSAGES/*.po"]
 [dependency-groups]
 dev = [
     "pyrefly",
+    "pytest>=9.2.0",
     "ruff",
-    "playwright>=1.60",
+    "playwright>=1.65.2",
     "babel>=2.18.0",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
 
 [tool.pyrefly]
 python-interpreter = ".venv/bin/python"
