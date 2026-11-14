@@ -52,8 +52,10 @@ def main() -> None:
                 res = _run(f"ISBN {isbn}", lambda: client.search_by_isbn(isbn))
                 print("   ->", (res.title, res.authors, res.source) if res else None)
             for title, author, lang in TITLES:
-                hits = _run(f"title {title!r}",
-                            lambda: client.search_by_title(title, author, lang, 8))
+                hits = _run(
+                    f"title {title!r}",
+                    lambda: client.search_by_title(title, author, lang, 8),
+                )
                 print(f"   -> {len(hits)} results")
         finally:
             client.close()

@@ -20,12 +20,14 @@ from pathlib import Path
 from typing import Any, Optional
 
 # ISO 639-1 -> display name, for the language lookup table. Extend freely.
+# fmt: off
 _LANG_NAMES = {
     "en": "English", "de": "German", "fr": "French", "es": "Spanish",
     "it": "Italian", "nl": "Dutch", "pt": "Portuguese", "ru": "Russian",
     "ja": "Japanese", "zh": "Chinese", "sv": "Swedish", "da": "Danish",
     "no": "Norwegian", "fi": "Finnish", "pl": "Polish", "la": "Latin",
 }
+# fmt: on
 
 # Author display name expression reused across queries.
 _DISPLAY = "TRIM(COALESCE(first_name,'') || ' ' || COALESCE(last_name,''))"
@@ -150,9 +152,7 @@ class Database:
         ).fetchone()
         if row:
             return row["publisher_id"]
-        cur = self.conn.execute(
-            "INSERT INTO publisher(name) VALUES(?)", (name,)
-        )
+        cur = self.conn.execute("INSERT INTO publisher(name) VALUES(?)", (name,))
         return cur.lastrowid
 
     def _get_or_create_genre(self, name: Optional[str]) -> Optional[int]:
@@ -287,7 +287,7 @@ class Database:
 
         # Genres.
         self.conn.execute("DELETE FROM book_genre WHERE book_id = ?", (book_id,))
-        for name in (d.get("genres") or []):
+        for name in d.get("genres") or []:
             gid = self._get_or_create_genre(name)
             if gid:
                 self.conn.execute(
@@ -353,7 +353,8 @@ class Database:
         book["authors"] = self._roles(book_id, "author")
         book["narrators"] = self._roles(book_id, "narrator")
         book["genres"] = [
-            r["name"] for r in self.conn.execute(
+            r["name"]
+            for r in self.conn.execute(
                 "SELECT g.name FROM genre g "
                 "JOIN book_genre bg ON bg.genre_id = g.genre_id "
                 "WHERE bg.book_id = ? ORDER BY g.name",
@@ -364,7 +365,8 @@ class Database:
 
     def _roles(self, book_id: int, role: str) -> list[str]:
         return [
-            r["display"] for r in self.conn.execute(
+            r["display"]
+            for r in self.conn.execute(
                 f"SELECT {_DISPLAY} AS display FROM author a "
                 "JOIN book_author ba ON ba.author_id = a.author_id "
                 "WHERE ba.book_id = ? AND ba.role = ? ORDER BY ba.author_order",
@@ -375,7 +377,8 @@ class Database:
     # ------------------------------------------------------- reading journal
     def list_notes(self, book_id: int) -> list[dict]:
         return [
-            dict(r) for r in self.conn.execute(
+            dict(r)
+            for r in self.conn.execute(
                 "SELECT * FROM book_note WHERE book_id = ? "
                 "ORDER BY note_date DESC, note_id DESC",
                 (book_id,),
@@ -392,9 +395,7 @@ class Database:
 
     def delete_note(self, note_id: int) -> None:
         with self._lock:
-            self.conn.execute(
-                "DELETE FROM book_note WHERE note_id = ?", (note_id,)
-            )
+            self.conn.execute("DELETE FROM book_note WHERE note_id = ?", (note_id,))
             self.conn.commit()
 
     # --------------------------------------------------------------- search

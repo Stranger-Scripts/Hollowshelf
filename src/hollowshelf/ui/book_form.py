@@ -29,9 +29,11 @@ def render(book_id: Optional[int]) -> None:
     f: dict[str, object] = {}
 
     with ui.column().classes("w-full max-w-screen-lg mx-auto p-4 gap-4"):
-        ui.label(_("Add a book") if book is None
-                 else _("Edit · {title}").format(title=book["title"])) \
-            .classes("text-2xl font-bold")
+        ui.label(
+            _("Add a book")
+            if book is None
+            else _("Edit · {title}").format(title=book["title"])
+        ).classes("text-2xl font-bold")
 
         if book is None:
             _lookup_card(f)
@@ -45,9 +47,11 @@ def render(book_id: Optional[int]) -> None:
 #  Metadata lookup (Open Library / Google Books)
 # --------------------------------------------------------------------------- #
 
+
 def _lookup_card(f: dict) -> None:
-    with ui.expansion(_("Look up metadata (Open Library / Google Books)"),
-                      icon="search", value=True).classes("w-full border rounded"):
+    with ui.expansion(
+        _("Look up metadata (Open Library / Google Books)"), icon="search", value=True
+    ).classes("w-full border rounded"):
         with ui.column().classes("w-full p-2 gap-3"):
             with ui.row().classes("w-full items-end gap-2"):
                 isbn = ui.input("ISBN", placeholder="978…").classes("grow")
@@ -57,7 +61,8 @@ def _lookup_card(f: dict) -> None:
                 author = ui.input(_("Author")).classes("w-48")
                 lang = ui.select(
                     {None: _("Any"), "en": _("English"), "de": _("German")},
-                    value=None, label=_("Language"),
+                    value=None,
+                    label=_("Language"),
                 ).classes("w-32")
                 title_btn = ui.button(_("Search title"), icon="search")
 
@@ -69,8 +74,9 @@ def _lookup_card(f: dict) -> None:
                 results.clear()
                 if not items:
                     with results:
-                        ui.label(_("No matches (or the API was unreachable).")) \
-                            .classes("text-sm opacity-70")
+                        ui.label(_("No matches (or the API was unreachable).")).classes(
+                            "text-sm opacity-70"
+                        )
                     return
                 with results:
                     for res in items:
@@ -92,8 +98,10 @@ def _lookup_card(f: dict) -> None:
                 spinner.visible = True
                 hits = await run.io_bound(
                     state.get_client().search_by_title,
-                    title.value.strip(), author.value.strip() or None,
-                    lang.value, 8,
+                    title.value.strip(),
+                    author.value.strip() or None,
+                    lang.value,
+                    8,
                 )
                 spinner.visible = False
                 show(hits)
@@ -117,8 +125,9 @@ def _result_card(res: BookResult, f: dict) -> None:
                     str(x) for x in (res.year, res.media, res.source) if x
                 )
                 ui.label(meta).classes("text-xs opacity-70")
-            ui.button(_("Use"), icon="check",
-                      on_click=lambda r=res: _apply(r, f)).props("outline")
+            ui.button(
+                _("Use"), icon="check", on_click=lambda r=res: _apply(r, f)
+            ).props("outline")
 
 
 def _apply(res: BookResult, f: dict) -> None:
@@ -140,15 +149,18 @@ def _apply(res: BookResult, f: dict) -> None:
 #  The form
 # --------------------------------------------------------------------------- #
 
+
 def _form_card(f: dict, book: Optional[dict]) -> None:
     b = book or {}
     with ui.card().classes("w-full gap-3"):
         with ui.row().classes("w-full gap-3 no-wrap"):
             with ui.column().classes("grow gap-3"):
-                f["title"] = ui.input(_("Title"), value=b.get("title", "")) \
-                    .classes("w-full")
-                f["subtitle"] = ui.input(_("Subtitle"), value=b.get("subtitle") or "") \
-                    .classes("w-full")
+                f["title"] = ui.input(_("Title"), value=b.get("title", "")).classes(
+                    "w-full"
+                )
+                f["subtitle"] = ui.input(
+                    _("Subtitle"), value=b.get("subtitle") or ""
+                ).classes("w-full")
                 f["authors"] = ui.textarea(
                     _("Authors (one per line)"),
                     value="\n".join(b.get("authors", [])),
@@ -164,80 +176,118 @@ def _form_card(f: dict, book: Optional[dict]) -> None:
             # Cover preview (bound to the URL field once it exists, below).
             with ui.column().classes("items-center gap-1"):
                 ui.label(_("Cover")).classes("text-xs opacity-60")
-                cover = ui.image().classes(
-                    "w-32 h-48 object-cover rounded border"
-                )
+                cover = ui.image().classes("w-32 h-48 object-cover rounded border")
 
         with ui.row().classes("w-full gap-3 flex-wrap"):
             f["format"] = ui.select(
-                common.formats(), value=b.get("format", "physical"),
+                common.formats(),
+                value=b.get("format", "physical"),
                 label=_("Format"),
             ).classes("w-40")
             f["read_status"] = ui.select(
-                common.read_statuses(), value=b.get("read_status", "unread"),
+                common.read_statuses(),
+                value=b.get("read_status", "unread"),
                 label=_("Status"),
             ).classes("w-40")
             f["rating"] = ui.select(
-                common.RATINGS, value=b.get("rating") or 0, label=_("Rating"),
+                common.RATINGS,
+                value=b.get("rating") or 0,
+                label=_("Rating"),
             ).classes("w-32")
-            f["language"] = ui.input(
-                _("Language code"), value=b.get("language") or "",
-            ).props("placeholder=en, de…").classes("w-32")
+            f["language"] = (
+                ui.input(
+                    _("Language code"),
+                    value=b.get("language") or "",
+                )
+                .props("placeholder=en, de…")
+                .classes("w-32")
+            )
 
         with ui.row().classes("w-full gap-3 flex-wrap"):
-            f["isbn13"] = ui.input("ISBN-13", value=b.get("isbn13") or "") \
-                .classes("w-48")
-            f["publisher"] = ui.input(_("Publisher"), value=b.get("publisher") or "") \
-                .classes("w-56")
-            f["publication_date"] = ui.input(
-                _("Published"), value=b.get("publication_date") or "",
-            ).props("placeholder=YYYY or YYYY-MM-DD").classes("w-40")
-            f["acquired_date"] = ui.input(
-                _("Acquired"), value=b.get("acquired_date") or "",
-            ).props("placeholder=YYYY-MM-DD").classes("w-40")
+            f["isbn13"] = ui.input("ISBN-13", value=b.get("isbn13") or "").classes(
+                "w-48"
+            )
+            f["publisher"] = ui.input(
+                _("Publisher"), value=b.get("publisher") or ""
+            ).classes("w-56")
+            f["publication_date"] = (
+                ui.input(
+                    _("Published"),
+                    value=b.get("publication_date") or "",
+                )
+                .props("placeholder=YYYY or YYYY-MM-DD")
+                .classes("w-40")
+            )
+            f["acquired_date"] = (
+                ui.input(
+                    _("Acquired"),
+                    value=b.get("acquired_date") or "",
+                )
+                .props("placeholder=YYYY-MM-DD")
+                .classes("w-40")
+            )
 
         with ui.row().classes("w-full gap-3 flex-wrap"):
             f["page_count"] = ui.number(
-                _("Pages"), value=b.get("page_count"), format="%d",
+                _("Pages"),
+                value=b.get("page_count"),
+                format="%d",
             ).classes("w-32")
             f["duration_minutes"] = ui.number(
-                _("Duration (min)"), value=b.get("duration_minutes"), format="%d",
+                _("Duration (min)"),
+                value=b.get("duration_minutes"),
+                format="%d",
             ).classes("w-40")
-            f["file_format"] = ui.input(
-                _("File format"), value=b.get("file_format") or "",
-            ).props("placeholder=EPUB, MP3…").classes("w-40")
-            f["series"] = ui.input(_("Series"), value=b.get("series") or "") \
-                .classes("w-56")
+            f["file_format"] = (
+                ui.input(
+                    _("File format"),
+                    value=b.get("file_format") or "",
+                )
+                .props("placeholder=EPUB, MP3…")
+                .classes("w-40")
+            )
+            f["series"] = ui.input(_("Series"), value=b.get("series") or "").classes(
+                "w-56"
+            )
             f["series_position"] = ui.number(
-                _("Series #"), value=b.get("series_position"), format="%g",
+                _("Series #"),
+                value=b.get("series_position"),
+                format="%g",
             ).classes("w-28")
 
         with ui.row().classes("w-full gap-3 flex-wrap"):
             f["location"] = ui.input(
-                _("Location"), value=b.get("location") or "",
+                _("Location"),
+                value=b.get("location") or "",
                 placeholder=_("Shelf B3, Kindle, Audible…"),
             ).classes("grow")
             f["cover_image_url"] = ui.input(
-                _("Cover image URL"), value=b.get("cover_image_url") or "",
+                _("Cover image URL"),
+                value=b.get("cover_image_url") or "",
             ).classes("grow")
 
         # Wire the cover preview to the URL field.
         cover.bind_source_from(f["cover_image_url"], "value")
 
-        f["description"] = _markdown_field(
-            _("Description"), b.get("description") or ""
-        )
+        f["description"] = _markdown_field(_("Description"), b.get("description") or "")
         f["review"] = _markdown_field(_("Review"), b.get("review") or "")
 
 
 def _markdown_field(label: str, value: str):
     ui.label(label).classes("text-sm font-medium mt-2")
     with ui.row().classes("w-full gap-3 no-wrap items-stretch"):
-        editor = ui.codemirror(
-            value=value, language="markdown", line_wrapping=True,
-        ).classes("w-1/2 border rounded").style("height: 16rem")
-        with ui.scroll_area().classes("w-1/2 border rounded p-2") \
-                .style("height: 16rem"):
+        editor = (
+            ui.codemirror(
+                value=value,
+                language="markdown",
+                line_wrapping=True,
+            )
+            .classes("w-1/2 border rounded")
+            .style("height: 16rem")
+        )
+        with (
+            ui.scroll_area().classes("w-1/2 border rounded p-2").style("height: 16rem")
+        ):
             preview = ui.markdown(value)
         preview.bind_content_from(editor, "value")
     return editor
@@ -246,6 +296,7 @@ def _markdown_field(label: str, value: str):
 # --------------------------------------------------------------------------- #
 #  Save / delete
 # --------------------------------------------------------------------------- #
+
 
 def _collect(f: dict) -> dict:
     def lines(key: str) -> list[str]:
@@ -257,8 +308,9 @@ def _collect(f: dict) -> dict:
         "subtitle": f["subtitle"].value,
         "authors": lines("authors"),
         "narrators": lines("narrators"),
-        "genres": [g.strip() for g in (f["genres"].value or "").split(",")
-                   if g.strip()],
+        "genres": [
+            g.strip() for g in (f["genres"].value or "").split(",") if g.strip()
+        ],
         "format": f["format"].value,
         "read_status": f["read_status"].value,
         "rating": rating or None,
@@ -284,8 +336,12 @@ def _action_row(f: dict, book_id: Optional[int]) -> None:
         ui.button(_("Cancel"), on_click=lambda: ui.navigate.to("/")).props("flat")
         with ui.row().classes("gap-2"):
             if book_id is not None:
-                ui.button(_("Delete"), icon="delete", color="negative",
-                          on_click=lambda: _confirm_delete(book_id)).props("outline")
+                ui.button(
+                    _("Delete"),
+                    icon="delete",
+                    color="negative",
+                    on_click=lambda: _confirm_delete(book_id),
+                ).props("outline")
             ui.button(_("Save"), icon="save", on_click=lambda: _save(f, book_id))
 
 
@@ -323,6 +379,7 @@ def _confirm_delete(book_id: int) -> None:
 #  Reading journal (book_note)
 # --------------------------------------------------------------------------- #
 
+
 def _journal_card(book_id: int) -> None:
     with ui.card().classes("w-full gap-3"):
         ui.label(_("Reading journal")).classes("text-lg font-semibold")
@@ -343,18 +400,28 @@ def _journal_card(book_id: int) -> None:
                                 f" · {n['note_date']}"
                             ).classes("text-xs opacity-70")
                             ui.button(
-                                icon="delete", color="negative",
-                                on_click=lambda nid=n["note_id"]: _del_note(nid, refresh),
+                                icon="delete",
+                                color="negative",
+                                on_click=lambda nid=n["note_id"]: _del_note(
+                                    nid, refresh
+                                ),
                             ).props("flat dense round")
                         ui.markdown(n["content"])
 
         with ui.row().classes("w-full items-end gap-2"):
             entry_type = ui.select(
-                common.entry_types(), value="note", label=_("Type"),
+                common.entry_types(),
+                value="note",
+                label=_("Type"),
             ).classes("w-40")
-        editor = ui.codemirror(
-            language="markdown", line_wrapping=True,
-        ).classes("w-full border rounded").style("height: 10rem")
+        editor = (
+            ui.codemirror(
+                language="markdown",
+                line_wrapping=True,
+            )
+            .classes("w-full border rounded")
+            .style("height: 10rem")
+        )
 
         def add() -> None:
             content = (editor.value or "").strip()

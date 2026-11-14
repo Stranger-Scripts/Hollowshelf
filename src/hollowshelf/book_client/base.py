@@ -56,8 +56,12 @@ class MetadataProvider:
             if exc.response.status_code == 404:
                 log.debug("%s: not found (%s)", self.name, url)
             else:
-                log.warning("%s request failed: HTTP %s (%s)",
-                            self.name, exc.response.status_code, url)
+                log.warning(
+                    "%s request failed: HTTP %s (%s)",
+                    self.name,
+                    exc.response.status_code,
+                    url,
+                )
             return None
         except (httpx.HTTPError, ValueError) as exc:
             log.warning("%s request failed: %s (%s)", self.name, exc, url)
@@ -75,7 +79,7 @@ class MetadataProvider:
         self,
         title: str,
         author: Optional[str],
-        language: Optional[str],   # "de" / "en"
+        language: Optional[str],  # "de" / "en"
         limit: int,
     ) -> list[BookResult]:
         """Search by title, returning a ranked list of candidates."""

@@ -51,8 +51,7 @@ class GoogleBooksClient(MetadataProvider):
 
     def _normalize(self, item: dict) -> BookResult:
         info = item.get("volumeInfo", {})
-        ids = {x["type"]: x["identifier"]
-               for x in info.get("industryIdentifiers", [])}
+        ids = {x["type"]: x["identifier"] for x in info.get("industryIdentifiers", [])}
         images = info.get("imageLinks", {})
         return BookResult(
             title=info.get("title", "Unknown"),
@@ -62,7 +61,8 @@ class GoogleBooksClient(MetadataProvider):
             year=parse_year(info.get("publishedDate")),
             publisher=info.get("publisher"),
             language=info.get("language"),
-            cover_url=(images.get("thumbnail") or "").replace("http://", "https://") or None,
+            cover_url=(images.get("thumbnail") or "").replace("http://", "https://")
+            or None,
             description=info.get("description"),
             page_count=info.get("pageCount"),
             media=detect_media(info.get("title"), info.get("subtitle")),

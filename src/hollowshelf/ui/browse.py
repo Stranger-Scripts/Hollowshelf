@@ -33,22 +33,31 @@ def render() -> None:
         ui.label(_("Library")).classes("text-2xl font-bold")
 
         with ui.row().classes("w-full items-end gap-3"):
-            search = ui.input(
-                _("Search"), placeholder=_("title, author, description, notes…")
-            ).props("clearable").classes("grow")
+            search = (
+                ui.input(
+                    _("Search"), placeholder=_("title, author, description, notes…")
+                )
+                .props("clearable")
+                .classes("grow")
+            )
             status = ui.select(
                 {None: _("Any status"), **common.read_statuses()},
-                value=None, label=_("Status"),
+                value=None,
+                label=_("Status"),
             ).classes("w-40")
             fmt = ui.select(
                 {None: _("Any format"), **common.formats()},
-                value=None, label=_("Format"),
+                value=None,
+                label=_("Format"),
             ).classes("w-40")
-            ui.button(_("Add book"), icon="add",
-                      on_click=lambda: ui.navigate.to("/book/new"))
+            ui.button(
+                _("Add book"), icon="add", on_click=lambda: ui.navigate.to("/book/new")
+            )
 
         count = ui.label().classes("text-sm opacity-70")
 
+        # Kept hand-aligned: one line per grid column reads as a table.
+        # fmt: off
         grid = ui.aggrid({
             "columnDefs": [
                 {"headerName": _("Title"), "field": "title", "flex": 2,
@@ -69,6 +78,7 @@ def render() -> None:
             "rowData": [],
             "rowSelection": {"mode": "singleRow"},
         }).classes("w-full").style("height: 65vh")
+        # fmt: on
 
         def refresh() -> None:
             books = state.db.list_books(search.value, status.value, fmt.value)
