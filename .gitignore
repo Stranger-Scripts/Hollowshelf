@@ -54,8 +54,9 @@ coverage.xml
 cover/
 
 # Translations
+# The .pot template is tracked so a new locale can be started without
+# re-running extraction; compiled catalogues are build artifacts.
 *.mo
-*.pot
 
 # Hollowshelf local data (SQLite library + API cache)
 data/
