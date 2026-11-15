@@ -2,6 +2,8 @@
 name = "hollowshelf"
 version = "0.1.0"
 authors = [{name = "gabriel-geissler"}]
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.12"
 readme = "README.md"
 description = "A personal book library, built with NiceGUI."
@@ -16,7 +18,7 @@ dependencies = [
 hollowshelf = "hollowshelf.app:main"
 
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"] # >=77 for the PEP 639 SPDX license field
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
