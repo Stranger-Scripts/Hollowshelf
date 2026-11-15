@@ -76,7 +76,7 @@ These block or shape requirements. Each one should end up in DECISIONS.md.
 | OD-5 | Covers: hot-link the URL (breaks offline, see NFR-001), or cache images locally? | CAT-008, NFR-001 | M3 |
 | OD-6 | Distribution for v1.0: `uv tool install git+…`, a frozen binary (`nicegui-pack`/PyInstaller), or both? This decides what the release pipeline builds (REL-004). | REL-001, REL-004 | M4 |
 | OD-7 | Performance targets (proposed, NFR-003 and LKP-007): confirm or adjust the numbers. | NFR-003, LKP-007 | M1 |
-| OD-8 | **License:** MIT / Apache-2.0 (permissive, Apache adds a patent grant) vs. GPL-3.0 (copyleft). Note: on Linux the app depends on **PyQt6, which is GPL-3.0** (or commercial). Permissive licensing of your own code is compatible with that, but a *bundled binary* that ships PyQt6 has to be distributed under GPL terms as a whole. | LIC-001…003, OD-6 | **M0** |
+| OD-8 | ~~License: MIT / Apache-2.0 vs. GPL-3.0?~~ **MIT decided (D-017).** Linux binaries that bundle PyQt6 (GPL-3.0) ship under GPL terms as a whole. | LIC-001…003, OD-6 | ~~M0~~ done |
 | OD-9 | *Source set decided (D-016).* Still open: the default **priority order** for merging (e.g. Open Library > Google Books > ISFDB > Hardcover), and whether ISFDB should rank higher for speculative fiction. | LKP-001, LKP-008 | M2 |
 | OD-10 | API key storage: plaintext in the DB `settings` table (current state for Google; simple, but every backup then contains the key) vs. the OS keyring (`keyring`: Windows Credential Manager / Secret Service; needs a running secret service on Linux). | LKP-009 | M2 |
 | OD-11 | Scanner architecture: **(a)** Python-side capture (OpenCV + `zxing-cpp` decoder, preview streamed into NiceGUI; works whatever the webview does about camera permissions, but adds roughly 50–90 MB of wheels) vs. **(b)** in-webview `getUserMedia` + a bundled JS decoder (light, but depends on how QtWebEngine/WebView2 under pywebview handle camera permission prompts). Proposal: a time-boxed spike on (b), falling back to (a). | SCAN-* | M2 start |
@@ -394,11 +394,11 @@ Pri **M** · M4 · Status `Open` · Verify M
 ### 6.10 LIC: Licensing and copyright *(new in v0.2)*
 
 **LIC-001: License**
-Pri **M** · M0 · Status `Open` · Verify M · *Depends on OD-8*
+Pri **M** · M0 · Status `Partial` (MIT, D-017: LICENSE, SPDX field and README done; About page pending, UI-006/M4) · Verify M
 - There's a `LICENSE` file in the repo root, plus an SPDX `license` field in `pyproject.toml`. The license name is shown in the README and on the About page.
 
 **LIC-002: Copyright notice**
-Pri **M** · M0 (repo) / M4 (app) · Status `Open` · Verify M
+Pri **M** · M0 (repo) / M4 (app) · Status `Partial` (LICENSE and README footer done; About page pending, UI-006/M4) · Verify M
 - The notice reads `© 2026 Gabriel Geissler`, using the year of the first commit (2026-06-16) and the git author name; extend it to a range in later years.
 - It appears in the `LICENSE` file, the README footer, and the About page (UI-006).
 

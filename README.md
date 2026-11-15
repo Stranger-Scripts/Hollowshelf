@@ -68,3 +68,11 @@ What's planned, in what order, and the rules for getting it in — all under [`d
 
 The ideas previously listed here are now tracked as requirements, or parked in the
 [Parking Lot](docs/ROADMAP.md#parking-lot-not-scheduled).
+
+## License
+
+[MIT](LICENSE) · © 2026 Gabriel Geissler
+
+On Linux the app runs on PyQt6 (GPL-3.0) via pywebview, so a bundled Linux
+binary is distributed under GPL-3.0 terms as a whole; installs from source are
+unaffected. Third-party notices land with the About page (LIC-003).
