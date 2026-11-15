@@ -35,7 +35,7 @@ M2 and M3 can be swapped if export and restore feel more urgent than scanning.
 | 0.3 | Add `.nicegui/` to `.gitignore`. Delete the stray root `book_cache.db`. | DATA-001 | **Done** (both ignored; no stray file) |
 | 0.4 | Add `pytest` to the dev dependencies. Create `tests/` with a DB smoke test. | NFR-006 | **Done** on `feat/NFR-006-pytest-smoke` (16 tests pass); pending merge to `main` |
 | 0.5 | Get `ruff check` and `ruff format --check` passing. CI green. | NFR-006 | **Partial**: both ruff checks pass on `feat/NFR-006-pytest-smoke`; CI on `main` is still **red** (lint step) until that branch merges |
-| 0.6 | **Decide OD-8**, then add `LICENSE` with `© 2026 Gabriel Geissler`, the SPDX field in `pyproject.toml`, and a README footer. | LIC-001, LIC-002 | Open (no `LICENSE`, no SPDX field) |
+| 0.6 | **Decide OD-8**, then add `LICENSE` with `© 2026 Gabriel Geissler`, the SPDX field in `pyproject.toml`, and a README footer. | LIC-001, LIC-002 | **Done** (MIT, D-017) |
 | 0.7 | Merge `de-translation` → `main`. Delete the merged remote branches `book-search` and `translation`. | GUIDELINES §3 | **Partial**: merge done (PR #2); remote branches `book-search` and `translation` still exist |
 | 0.8 | Replace "Future Ideas" in the README with a link to this roadmap. | GUIDELINES §1 | **Done** (`b1adeaf`, README §Roadmap) |
 | 0.9 | **Decide OD-2 (now including the wishlist model), OD-3 and OD-7.** | URS §4 | Open (not in DECISIONS.md) |
@@ -43,8 +43,8 @@ M2 and M3 can be swapped if export and restore feel more urgent than scanning.
 **Exit criteria**
 - [ ] A fresh clone of `main` → `uv sync` → `uv run hollowshelf` works
 - [ ] CI green on `main`; only `main` exists as a long-lived branch
-- [ ] LICENSE in place
-- [ ] OD-2, OD-3, OD-7 and OD-8 are recorded as decisions
+- [x] LICENSE in place (MIT, D-017)
+- [ ] OD-2, OD-3 and OD-7 are recorded as decisions (OD-8 done: D-017)
 
 ---
 
