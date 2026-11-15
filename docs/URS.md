@@ -95,7 +95,7 @@ These block or shape requirements. Each one should end up in DECISIONS.md.
   - `Blocked`: an external constraint prevents it
   - `Withdrawn`: no longer required
 - **Verify:** `T` = automated test · `M` = manual check, recorded in the PR
-- *Status as of 2026-11-15, taken from branch `feat/NFR-006-pytest-smoke` @ `b2c2cf2`. The only tests so far cover the DB layer (M0 task 0.4), so nothing else is `Verified`.*
+- *Status as of 2026-11-15, taken from `main` @ `e84a81c`. The only tests so far cover the DB layer (M0 task 0.4), so nothing else is `Verified`.*
 
 ---
 
@@ -433,7 +433,7 @@ Pri **M** · M1 · Status `Open` · Verify T
 | NFR-003 | **Performance (proposed, OD-7):** with 5,000 items, the grid loads in under 1 s and search returns in under 200 ms on the dev machine. | S | M1 | Open | T (benchmark) |
 | NFR-004 | **Platforms** *(amended, D-012)*: Linux and Windows 10/11 are supported; macOS depends on OD-1. CI runs on `ubuntu-latest` and `windows-latest` **from M1**. Each release gets a manual smoke test on Windows (window opens via WebView2, CRUD, lookup, scan, backup). | M | M1 (CI) / M4 (full) | Partial (Linux only) | T + M |
 | NFR-005 | **Zero ops:** no server process, no external service that has to be running, no config needed to start. | M | M1 | Impl. | M |
-| NFR-006 | **Maintainability:** `ruff check` and `ruff format --check` pass. The DB layer and the API parsers have automated tests. CI is green on `main`. | M | M0 | `Partial` (ruff green and DB layer tested on `feat/NFR-006-pytest-smoke`; **API parser tests outstanding**, and CI on `main` stays red until that branch merges) | T |
+| NFR-006 | **Maintainability:** `ruff check` and `ruff format --check` pass. The DB layer and the API parsers have automated tests. CI is green on `main`. | M | M0 | `Partial` (ruff green, DB layer tested, CI green on `main`; **API parser tests outstanding**) | T |
 
 ## 8. Release requirements
 
