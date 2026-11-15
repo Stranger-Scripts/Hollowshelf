@@ -1,7 +1,8 @@
 """SQLite data access for Hollowshelf.
 
-Wraps the schema you authored in ``collection_schema.sql``:
-  * auto-initialises the database from that file on first run,
+Wraps the schema you authored in ``collection_schema.sql`` (shipped inside the
+package, loaded via ``config.schema_sql()``):
+  * auto-initialises the database from that schema on first run,
   * adds a small ``app_settings`` table (name/email used for the API
     User-Agent) without touching your schema file,
   * provides book / author / genre / note CRUD,
@@ -58,8 +59,15 @@ def _clean(value: Any) -> Optional[str]:
     return value or None
 
 
+def copy_database(src: str | Path, dest: str | Path) -> None:
+    """Copy a SQLite database with the backup API (safe against open writers)."""
+    Path(dest).parent.mkdir(parents=True, exist_ok=True)
+    with sqlite3.connect(src) as source, sqlite3.connect(dest) as target:
+        source.backup(target)
+
+
 class Database:
-    def __init__(self, db_path: str | Path, schema_path: str | Path):
+    def __init__(self, db_path: str | Path, schema_sql: str):
         self.path = Path(db_path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self._lock = threading.Lock()
@@ -67,7 +75,7 @@ class Database:
         self.conn.row_factory = sqlite3.Row
         self.conn.execute("PRAGMA foreign_keys = ON")
         if not self._has_schema():
-            self._init_schema(schema_path)
+            self._init_schema(schema_sql)
         self._ensure_settings_table()
 
     # ----------------------------------------------------------------- setup
@@ -77,10 +85,9 @@ class Database:
         ).fetchone()
         return row is not None
 
-    def _init_schema(self, schema_path: str | Path) -> None:
-        sql = Path(schema_path).read_text(encoding="utf-8")
+    def _init_schema(self, schema_sql: str) -> None:
         with self._lock:
-            self.conn.executescript(sql)
+            self.conn.executescript(schema_sql)
             self.conn.commit()
 
     def _ensure_settings_table(self) -> None:

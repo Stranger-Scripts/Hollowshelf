@@ -80,9 +80,9 @@ def render() -> None:
 
         with ui.card().classes("w-full gap-1"):
             ui.label(_("Storage")).classes("text-lg font-semibold")
-            ui.label(_("Library database: {path}").format(path=config.DB_PATH)).classes(
-                "text-xs font-mono opacity-70"
-            )
-            ui.label(_("API cache: {path}").format(path=config.CACHE_PATH)).classes(
+            ui.label(
+                _("Library database: {path}").format(path=config.db_path())
+            ).classes("text-xs font-mono opacity-70")
+            ui.label(_("API cache: {path}").format(path=config.cache_path())).classes(
                 "text-xs font-mono opacity-70"
             )

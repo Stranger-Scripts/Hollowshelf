@@ -1,16 +1,14 @@
-# Translations template for hollowshelf.
-# Copyright (C) 2026 Stranger-Scripts
-# This file is distributed under the same license as the hollowshelf
-# project.
+# Translations template for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: hollowshelf 0.1.0\n"
-"Report-Msgid-Bugs-To: https://github.com/Stranger-"
-"Scripts/Hollowshelf/issues\n"
-"POT-Creation-Date: 2026-11-14 11:57+0100\n"
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-11-15 15:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,253 +25,276 @@ msgstr ""
 msgid "Back to library"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:32
+#: src/hollowshelf/ui/book_form.py:33
 msgid "Add a book"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:33
+#: src/hollowshelf/ui/book_form.py:35
 #, python-brace-format
 msgid "Edit · {title}"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:49
+#: src/hollowshelf/ui/book_form.py:53
 msgid "Look up metadata (Open Library / Google Books)"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:54
+#: src/hollowshelf/ui/book_form.py:58
 msgid "Search ISBN"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:56 src/hollowshelf/ui/book_form.py:148
-#: src/hollowshelf/ui/browse.py:54
+#: src/hollowshelf/ui/book_form.py:60 src/hollowshelf/ui/book_form.py:158
+#: src/hollowshelf/ui/browse.py:99
 msgid "Title"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:57
+#: src/hollowshelf/ui/book_form.py:61
 msgid "Author"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:59
+#: src/hollowshelf/ui/book_form.py:63
 msgid "Any"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:59
+#: src/hollowshelf/ui/book_form.py:63
 msgid "English"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:59
+#: src/hollowshelf/ui/book_form.py:63
 msgid "German"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:60
+#: src/hollowshelf/ui/book_form.py:65
 msgid "Language"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:62
+#: src/hollowshelf/ui/book_form.py:67
 msgid "Search title"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:72
+#: src/hollowshelf/ui/book_form.py:77
 msgid "No matches (or the API was unreachable)."
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:120
+#: src/hollowshelf/ui/book_form.py:129
 msgid "Use"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:136
+#: src/hollowshelf/ui/book_form.py:145
 #, python-brace-format
 msgid "Filled from “{title}”"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:150
+#: src/hollowshelf/ui/book_form.py:162
 msgid "Subtitle"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:153
+#: src/hollowshelf/ui/book_form.py:165
 msgid "Authors (one per line)"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:157
+#: src/hollowshelf/ui/book_form.py:169
 msgid "Narrators (one per line, optional)"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:161
+#: src/hollowshelf/ui/book_form.py:173
 msgid "Genres (comma-separated)"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:166
+#: src/hollowshelf/ui/book_form.py:178
 msgid "Cover"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:174 src/hollowshelf/ui/browse.py:45
-#: src/hollowshelf/ui/browse.py:60
+#: src/hollowshelf/ui/book_form.py:185 src/hollowshelf/ui/browse.py:87
+#: src/hollowshelf/ui/browse.py:105
 msgid "Format"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:178 src/hollowshelf/ui/browse.py:41
-#: src/hollowshelf/ui/browse.py:62
+#: src/hollowshelf/ui/book_form.py:190 src/hollowshelf/ui/browse.py:82
+#: src/hollowshelf/ui/browse.py:107
 msgid "Status"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:181 src/hollowshelf/ui/browse.py:64
+#: src/hollowshelf/ui/book_form.py:195 src/hollowshelf/ui/browse.py:109
 msgid "Rating"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:184
+#: src/hollowshelf/ui/book_form.py:199
 msgid "Language code"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:190
+#: src/hollowshelf/ui/book_form.py:211
 msgid "Publisher"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:193
+#: src/hollowshelf/ui/book_form.py:215
 msgid "Published"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:196
+#: src/hollowshelf/ui/book_form.py:223
 msgid "Acquired"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:201
+#: src/hollowshelf/ui/book_form.py:232
 msgid "Pages"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:204
+#: src/hollowshelf/ui/book_form.py:237
 msgid "Duration (min)"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:207
+#: src/hollowshelf/ui/book_form.py:243
 msgid "File format"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:209 src/hollowshelf/ui/browse.py:58
+#: src/hollowshelf/ui/book_form.py:249 src/hollowshelf/ui/browse.py:103
 msgid "Series"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:212
+#: src/hollowshelf/ui/book_form.py:253
 msgid "Series #"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:217
+#: src/hollowshelf/ui/book_form.py:260
 msgid "Location"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:218
+#: src/hollowshelf/ui/book_form.py:262
 msgid "Shelf B3, Kindle, Audible…"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:221
+#: src/hollowshelf/ui/book_form.py:265
 msgid "Cover image URL"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:228
+#: src/hollowshelf/ui/book_form.py:272
 msgid "Description"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:230 src/hollowshelf/ui/common.py:38
+#: src/hollowshelf/ui/book_form.py:273 src/hollowshelf/ui/common.py:38
 msgid "Review"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:284 src/hollowshelf/ui/book_form.py:310
+#: src/hollowshelf/ui/book_form.py:336 src/hollowshelf/ui/book_form.py:366
 msgid "Cancel"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:287 src/hollowshelf/ui/book_form.py:318
+#: src/hollowshelf/ui/book_form.py:340 src/hollowshelf/ui/book_form.py:374
 msgid "Delete"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:289 src/hollowshelf/ui/common.py:108
-#: src/hollowshelf/ui/settings.py:51 src/hollowshelf/ui/settings.py:75
+#: src/hollowshelf/ui/book_form.py:345 src/hollowshelf/ui/common.py:114
+#: src/hollowshelf/ui/settings.py:53 src/hollowshelf/ui/settings.py:79
 msgid "Save"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:295
+#: src/hollowshelf/ui/book_form.py:351
 msgid "Title is required"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:299
+#: src/hollowshelf/ui/book_form.py:355
 msgid "Book added"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:303 src/hollowshelf/ui/settings.py:48
-#: src/hollowshelf/ui/settings.py:72
+#: src/hollowshelf/ui/book_form.py:359 src/hollowshelf/ui/settings.py:50
+#: src/hollowshelf/ui/settings.py:76
 msgid "Saved"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:308
+#: src/hollowshelf/ui/book_form.py:364
 msgid "Delete this book and all its notes?"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:315
+#: src/hollowshelf/ui/book_form.py:371
 msgid "Deleted"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:328
+#: src/hollowshelf/ui/book_form.py:385
 msgid "Reading journal"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:337
+#: src/hollowshelf/ui/book_form.py:394
 msgid "No notes yet."
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:353
+#: src/hollowshelf/ui/book_form.py:415
 msgid "Type"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:362
+#: src/hollowshelf/ui/book_form.py:429
 msgid "Write something first"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:367
+#: src/hollowshelf/ui/book_form.py:434
 msgid "Note added"
 msgstr ""
 
-#: src/hollowshelf/ui/book_form.py:369
+#: src/hollowshelf/ui/book_form.py:436
 msgid "Add note"
 msgstr ""
 
-#: src/hollowshelf/ui/browse.py:33 src/hollowshelf/ui/common.py:53
+#: src/hollowshelf/ui/browse.py:40
+msgid "Library imported."
+msgstr ""
+
+#: src/hollowshelf/ui/browse.py:48
+msgid "Existing library found"
+msgstr ""
+
+#: src/hollowshelf/ui/browse.py:51
+#, python-brace-format
+msgid ""
+"A library from an earlier version was found at {path}. Import it into the"
+" new data directory ({data_dir})? The original file is left untouched."
+msgstr ""
+
+#: src/hollowshelf/ui/browse.py:57
+msgid "Start fresh"
+msgstr ""
+
+#: src/hollowshelf/ui/browse.py:58
+msgid "Import"
+msgstr ""
+
+#: src/hollowshelf/ui/browse.py:69 src/hollowshelf/ui/common.py:55
 msgid "Library"
 msgstr ""
 
-#: src/hollowshelf/ui/browse.py:37
+#: src/hollowshelf/ui/browse.py:74
 msgid "Search"
 msgstr ""
 
-#: src/hollowshelf/ui/browse.py:37
+#: src/hollowshelf/ui/browse.py:74
 msgid "title, author, description, notes…"
 msgstr ""
 
-#: src/hollowshelf/ui/browse.py:40
+#: src/hollowshelf/ui/browse.py:80
 msgid "Any status"
 msgstr ""
 
-#: src/hollowshelf/ui/browse.py:44
+#: src/hollowshelf/ui/browse.py:85
 msgid "Any format"
 msgstr ""
 
-#: src/hollowshelf/ui/browse.py:47 src/hollowshelf/ui/common.py:54
+#: src/hollowshelf/ui/browse.py:90 src/hollowshelf/ui/common.py:56
 msgid "Add book"
 msgstr ""
 
-#: src/hollowshelf/ui/browse.py:56
+#: src/hollowshelf/ui/browse.py:101
 msgid "Author(s)"
 msgstr ""
 
-#: src/hollowshelf/ui/browse.py:66
+#: src/hollowshelf/ui/browse.py:111
 msgid "Year"
 msgstr ""
 
-#: src/hollowshelf/ui/browse.py:79
+#: src/hollowshelf/ui/browse.py:125
 #, python-format
 msgid "%d book"
 msgid_plural "%d books"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/hollowshelf/ui/browse.py:94
+#: src/hollowshelf/ui/browse.py:140
 msgid "Double-click a row to open a book."
 msgstr ""
 
@@ -321,34 +342,34 @@ msgstr ""
 msgid "Progress"
 msgstr ""
 
-#: src/hollowshelf/ui/common.py:55 src/hollowshelf/ui/settings.py:17
+#: src/hollowshelf/ui/common.py:57 src/hollowshelf/ui/settings.py:17
 msgid "Settings"
 msgstr ""
 
-#: src/hollowshelf/ui/common.py:87
+#: src/hollowshelf/ui/common.py:91
 msgid "Welcome to Hollowshelf"
 msgstr ""
 
-#: src/hollowshelf/ui/common.py:89
+#: src/hollowshelf/ui/common.py:94
 msgid ""
 "Enter your name and email. They identify the app to the free book APIs "
 "(Open Library asks apps to do this) and are stored locally — no account, "
 "nothing is sent anywhere else."
 msgstr ""
 
-#: src/hollowshelf/ui/common.py:93 src/hollowshelf/ui/settings.py:26
+#: src/hollowshelf/ui/common.py:99 src/hollowshelf/ui/settings.py:28
 msgid "Name"
 msgstr ""
 
-#: src/hollowshelf/ui/common.py:94 src/hollowshelf/ui/settings.py:27
+#: src/hollowshelf/ui/common.py:100 src/hollowshelf/ui/settings.py:29
 msgid "Email"
 msgstr ""
 
-#: src/hollowshelf/ui/common.py:98 src/hollowshelf/ui/settings.py:42
+#: src/hollowshelf/ui/common.py:104 src/hollowshelf/ui/settings.py:44
 msgid "Both fields are required"
 msgstr ""
 
-#: src/hollowshelf/ui/common.py:101 src/hollowshelf/ui/settings.py:45
+#: src/hollowshelf/ui/common.py:107 src/hollowshelf/ui/settings.py:47
 msgid "That doesn't look like an email"
 msgstr ""
 
@@ -356,23 +377,23 @@ msgstr ""
 msgid "Identity"
 msgstr ""
 
-#: src/hollowshelf/ui/settings.py:22
+#: src/hollowshelf/ui/settings.py:23
 msgid ""
 "Sent as the User-Agent when looking up books, so the free APIs can "
 "identify the app (Open Library asks for this). Stored locally in your "
 "library database — never shared anywhere else."
 msgstr ""
 
-#: src/hollowshelf/ui/settings.py:35
+#: src/hollowshelf/ui/settings.py:37
 #, python-brace-format
 msgid "User-Agent: {ua}"
 msgstr ""
 
-#: src/hollowshelf/ui/settings.py:54
+#: src/hollowshelf/ui/settings.py:56
 msgid "Google Books"
 msgstr ""
 
-#: src/hollowshelf/ui/settings.py:56
+#: src/hollowshelf/ui/settings.py:59
 msgid ""
 "Optional. Without a key, Google Books shares a small daily quota that "
 "runs out (lookups then quietly return nothing). Add your own free key — "
@@ -380,20 +401,20 @@ msgid ""
 "locally in your library database."
 msgstr ""
 
-#: src/hollowshelf/ui/settings.py:62
+#: src/hollowshelf/ui/settings.py:66
 msgid "API key"
 msgstr ""
 
-#: src/hollowshelf/ui/settings.py:78
+#: src/hollowshelf/ui/settings.py:82
 msgid "Storage"
 msgstr ""
 
-#: src/hollowshelf/ui/settings.py:79
+#: src/hollowshelf/ui/settings.py:84
 #, python-brace-format
 msgid "Library database: {path}"
 msgstr ""
 
-#: src/hollowshelf/ui/settings.py:81
+#: src/hollowshelf/ui/settings.py:86
 #, python-brace-format
 msgid "API cache: {path}"
 msgstr ""

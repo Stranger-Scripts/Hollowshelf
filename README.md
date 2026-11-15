@@ -4,8 +4,8 @@ A personal book library — a native desktop app built with [NiceGUI](https://ni
 
 Browse and full-text-search your collection, add books by looking them up on
 Open Library / Google Books (or by hand), write markdown reviews and a dated
-reading journal. Data lives in a local SQLite database using the FTS5 schema in
-`collection_schema.sql`.
+reading journal. Data lives in a local SQLite database (FTS5 schema, shipped
+inside the package) in your OS user-data directory.
 
 ## Requirements
 
@@ -30,15 +30,30 @@ locally and used only to build the `User-Agent` the free book APIs ask for
 (Open Library requests that apps identify themselves). You can change them later
 under **Settings**.
 
+## Where your data lives
+
+The library is stored outside the source tree, so it survives re-clones and
+`git clean` (DATA-001):
+
+| What | Linux (XDG) | Windows |
+|------|-------------|---------|
+| `library.db`, UI storage | `~/.local/share/hollowshelf/` | `%LOCALAPPDATA%\hollowshelf\` |
+| `book_cache.db` (disposable) | `~/.cache/hollowshelf/` | `%LOCALAPPDATA%\hollowshelf\Cache\` |
+
+Override the data directory with `HOLLOWSHELF_DATA_DIR` or
+`uv run hollowshelf --data-dir PATH` (the cache then moves under it too).
+If a library from an older version exists at `<repo>/data/library.db`, the
+first start offers a one-time import; the original file is left untouched.
+
 ## Layout
 
 ```
-collection_schema.sql      # the SQLite + FTS5 schema (auto-applied on first run)
 run.py                     # convenience launcher
-data/                      # library.db + API cache (git-ignored, created on run)
 src/hollowshelf/
+  collection_schema.sql    # the SQLite + FTS5 schema (auto-applied on first run)
+  cli.py                   # entry point: --data-dir, storage env, then the app
   app.py                   # builds the DB, registers pages, runs the native window
-  config.py                # paths and constants
+  config.py                # paths (platformdirs) and constants
   db.py                    # schema init, settings, book/note CRUD, FTS search
   book_client.py           # Open Library / Google Books lookup client
   state.py                 # shared DB handle + lazily-built API client
@@ -51,8 +66,9 @@ src/hollowshelf/
 
 ## Notes
 
-- The book APIs are free and need no key. Lookups are cached in `data/book_cache.db`
-  for 30 days, and run off the UI thread (`run.io_bound`) so the window never freezes.
+- The book APIs are free and need no key. Lookups are cached in `book_cache.db`
+  (see the table above) for 30 days, and run off the UI thread (`run.io_bound`)
+  so the window never freezes.
 - Audiobook/format detection from the APIs is only a hint — correct it in the form.
 - `native=True` uses `pywebview`; on Linux it needs a webview backend
   (e.g. `python3-gi gir1.2-webkit2-4.1`, or install `pywebview[qt]`).
