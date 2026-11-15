@@ -6,13 +6,16 @@ Open Library User-Agent always carries the address the user entered.
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, cast
 
 from . import config
 from .book_client import BookClient
 from .db import Database
 
-db: Database  # set by app.main()
+# Assigned by app.main() before any page is served. Annotated as non-optional so
+# the `state.db.…` call sites stay clean; touching it earlier is a programming
+# error, and the cast keeps that honest for ruff and pyrefly.
+db: Database = cast("Database", None)
 
 _client: Optional[BookClient] = None
 _client_signature: Optional[tuple] = None

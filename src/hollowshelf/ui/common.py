@@ -44,8 +44,10 @@ def entry_types() -> dict[str, str]:
 def header(active: str = "") -> None:
     """Render the top navigation bar. ``active`` is one of library/add/settings."""
     with ui.header().classes("items-center justify-between px-4 py-2"):
-        with ui.row().classes("items-center gap-2 cursor-pointer").on(
-            "click", lambda: ui.navigate.to("/")
+        with (
+            ui.row()
+            .classes("items-center gap-2 cursor-pointer")
+            .on("click", lambda: ui.navigate.to("/"))
         ):
             ui.icon("menu_book").classes("text-2xl")
             ui.label("Hollowshelf").classes("text-xl font-semibold")
@@ -58,12 +60,14 @@ def header(active: str = "") -> None:
 
 def _language_toggle() -> None:
     """A DE/EN switch. Flipping it persists the choice and re-renders the page."""
+
     def switch(e) -> None:
         set_lang(e.value)
         ui.navigate.reload()
 
-    ui.toggle(LANGUAGES, value=get_lang(), on_change=switch) \
-        .props("dense no-caps color=white").classes("ml-2")
+    ui.toggle(LANGUAGES, value=get_lang(), on_change=switch).props(
+        "dense no-caps color=white"
+    ).classes("ml-2")
 
 
 def _nav(label: str, target: str, is_active: bool) -> None:
@@ -85,11 +89,13 @@ def ensure_profile() -> bool:
 
     with ui.dialog().props("persistent") as dialog, ui.card().classes("w-96 gap-3"):
         ui.label(_("Welcome to Hollowshelf")).classes("text-lg font-semibold")
-        ui.label(_(
-            "Enter your name and email. They identify the app to the free book "
-            "APIs (Open Library asks apps to do this) and are stored locally — "
-            "no account, nothing is sent anywhere else."
-        )).classes("text-sm opacity-80")
+        ui.label(
+            _(
+                "Enter your name and email. They identify the app to the free book "
+                "APIs (Open Library asks apps to do this) and are stored locally — "
+                "no account, nothing is sent anywhere else."
+            )
+        ).classes("text-sm opacity-80")
         name = ui.input(_("Name")).classes("w-full")
         email = ui.input(_("Email")).classes("w-full")
 

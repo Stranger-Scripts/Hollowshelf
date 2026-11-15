@@ -43,8 +43,9 @@ class OpenLibraryClient(MetadataProvider):
             year=parse_year(data.get("publish_date")),
             publisher=(data.get("publishers") or [None])[0],
             language=_MARC_TO_ISO.get(lang_code, lang_code),
-            cover_url=(f"https://covers.openlibrary.org/b/id/{cover}-L.jpg"
-                       if cover else None),
+            cover_url=(
+                f"https://covers.openlibrary.org/b/id/{cover}-L.jpg" if cover else None
+            ),
             description=_text(data.get("description")),
             page_count=data.get("number_of_pages"),
             media=detect_media(data.get("physical_format"), data.get("title")),
@@ -55,8 +56,10 @@ class OpenLibraryClient(MetadataProvider):
         params = {
             "title": title,
             "limit": limit,
-            "fields": ("title,author_name,first_publish_year,isbn,publisher,"
-                       "language,cover_i,number_of_pages_median,format"),
+            "fields": (
+                "title,author_name,first_publish_year,isbn,publisher,"
+                "language,cover_i,number_of_pages_median,format"
+            ),
         }
         if author:
             params["author"] = author
@@ -72,18 +75,23 @@ class OpenLibraryClient(MetadataProvider):
             cover_i = d.get("cover_i")
             fmt = d.get("format")
             fmt_hint = " ".join(fmt) if isinstance(fmt, list) else fmt
-            out.append(BookResult(
-                title=d.get("title", "Unknown"),
-                authors=d.get("author_name", []),
-                isbn_13=(d.get("isbn") or [None])[0],
-                year=d.get("first_publish_year"),
-                publisher=(d.get("publisher") or [None])[0],
-                cover_url=(f"https://covers.openlibrary.org/b/id/{cover_i}-L.jpg"
-                           if cover_i else None),
-                page_count=d.get("number_of_pages_median"),
-                media=detect_media(fmt_hint, d.get("title")),
-                source=self.name,
-            ))
+            out.append(
+                BookResult(
+                    title=d.get("title", "Unknown"),
+                    authors=d.get("author_name", []),
+                    isbn_13=(d.get("isbn") or [None])[0],
+                    year=d.get("first_publish_year"),
+                    publisher=(d.get("publisher") or [None])[0],
+                    cover_url=(
+                        f"https://covers.openlibrary.org/b/id/{cover_i}-L.jpg"
+                        if cover_i
+                        else None
+                    ),
+                    page_count=d.get("number_of_pages_median"),
+                    media=detect_media(fmt_hint, d.get("title")),
+                    source=self.name,
+                )
+            )
         return out
 
     def _resolve_authors(self, raw: list) -> list[str]:

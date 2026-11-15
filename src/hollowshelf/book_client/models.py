@@ -19,9 +19,9 @@ class BookResult:
     isbn_10: Optional[str] = None
     year: Optional[int] = None
     publisher: Optional[str] = None
-    language: Optional[str] = None          # ISO code, e.g. "de" / "en"
+    language: Optional[str] = None  # ISO code, e.g. "de" / "en"
     cover_url: Optional[str] = None
     description: Optional[str] = None
     page_count: Optional[int] = None
-    media: str = "unknown"                  # print | ebook | audiobook | unknown
-    source: str = ""                        # provider name, e.g. "openlibrary"
+    media: str = "unknown"  # print | ebook | audiobook | unknown
+    source: str = ""  # provider name, e.g. "openlibrary"

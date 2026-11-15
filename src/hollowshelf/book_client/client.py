@@ -34,8 +34,15 @@ DEFAULT_PROVIDERS: tuple[type[MetadataProvider], ...] = (
 # Fields copied from a lower-priority duplicate into the kept result when the
 # kept result is missing them.
 _ENRICH_FIELDS = (
-    "authors", "isbn_13", "isbn_10", "year", "publisher",
-    "language", "cover_url", "description", "page_count",
+    "authors",
+    "isbn_13",
+    "isbn_10",
+    "year",
+    "publisher",
+    "language",
+    "cover_url",
+    "description",
+    "page_count",
 )
 
 
@@ -111,7 +118,7 @@ class BookClient:
         self,
         title: str,
         author: Optional[str] = None,
-        language: Optional[str] = None,   # "de" / "en"
+        language: Optional[str] = None,  # "de" / "en"
         limit: int = 10,
     ) -> list[BookResult]:
         """Search every provider and return a merged, de-duplicated candidate list.
@@ -130,6 +137,7 @@ class BookClient:
 # --------------------------------------------------------------------------- #
 #  Merge / de-duplication across sources
 # --------------------------------------------------------------------------- #
+
 
 def _merge(result_lists: list[list[BookResult]], limit: int) -> list[BookResult]:
     merged: list[BookResult] = []

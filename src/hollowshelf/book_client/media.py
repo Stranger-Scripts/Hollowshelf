@@ -12,7 +12,14 @@ from typing import Optional
 
 _AUDIO_HINTS = ("audio", "hörbuch", "hoerbuch", "audible", "mp3", "spoken", "cd")
 _EBOOK_HINTS = ("ebook", "e-book", "kindle", "epub", "electronic")
-_PRINT_HINTS = ("paperback", "hardcover", "hardback", "taschenbuch", "gebunden", "print")
+_PRINT_HINTS = (
+    "paperback",
+    "hardcover",
+    "hardback",
+    "taschenbuch",
+    "gebunden",
+    "print",
+)
 
 
 def detect_media(*hints: Optional[str]) -> str:

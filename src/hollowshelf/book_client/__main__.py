@@ -8,7 +8,7 @@ from . import BookClient
 def main() -> None:
     client = BookClient(contact="you@example.com")
 
-    book = client.search_by_isbn("9783866470117")   # German edition
+    book = client.search_by_isbn("9783866470117")  # German edition
     print(book)
 
     for hit in client.search_by_title("Der Vorleser", language="de", limit=3):

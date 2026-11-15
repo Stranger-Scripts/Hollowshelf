@@ -2,7 +2,7 @@
 
 > **When** each requirement in [URS.md](URS.md) gets done. One milestone is
 > active at a time. A milestone closes when its exit criteria hold, not on a
-> date. Status as of 2026-11-14 (v0.3 of the plan).
+> date. Status as of 2026-11-15, checked on `feat/NFR-006-pytest-smoke` @ `b2c2cf2` (v0.3 of the plan).
 
 ```
 M0 Stabilise ─► M1 Trustworthy core ─► M2 Capture & sources ─► M3 Daily driver ─► M4 Distribution ─► M5 UI overhaul
@@ -28,17 +28,17 @@ M2 and M3 can be swapped if export and restore feel more urgent than scanning.
 - `.gitignore` excludes `*.mo`, while `pyproject.toml` ships `.mo` files as package data.
 - The repo is public but has no license, which by default means all rights reserved.
 
-| # | Task | Ref |
-|---|------|-----|
-| 0.1 | Commit the i18n infrastructure on `de-translation` so the branch is self-consistent. Completing the translations stays in M3. | UI-002 |
-| 0.2 | Decide on `.mo` handling (commit them, or compile in a build step). Make `.gitignore` and `pyproject.toml` agree. | UI-002 |
-| 0.3 | Add `.nicegui/` to `.gitignore`. Delete the stray root `book_cache.db`. | DATA-001 |
-| 0.4 | Add `pytest` to the dev dependencies. Create `tests/` with a DB smoke test. | NFR-006 |
-| 0.5 | Get `ruff check` and `ruff format --check` passing. CI green. | NFR-006 |
-| 0.6 | **Decide OD-8**, then add `LICENSE` with `© 2026 Gabriel Geissler`, the SPDX field in `pyproject.toml`, and a README footer. | LIC-001, LIC-002 |
-| 0.7 | Merge `de-translation` → `main`. Delete the merged remote branches `book-search` and `translation`. | GUIDELINES §3 |
-| 0.8 | Replace "Future Ideas" in the README with a link to this roadmap. | GUIDELINES §1 |
-| 0.9 | **Decide OD-2 (now including the wishlist model), OD-3 and OD-7.** | URS §4 |
+| # | Task | Ref | Status |
+|---|------|-----|--------|
+| 0.1 | Commit the i18n infrastructure on `de-translation` so the branch is self-consistent. Completing the translations stays in M3. | UI-002 | **Done** (merged to `main` in PR #2; `i18n.py`, `locales/`, `babel.cfg` and the `.pot` template are tracked) |
+| 0.2 | Decide on `.mo` handling (commit them, or compile in a build step). Make `.gitignore` and `pyproject.toml` agree. | UI-002 | **Done** (compile step: `.mo` gitignored as build artifacts, compile command documented in `babel.cfg`, `.pot` tracked) |
+| 0.3 | Add `.nicegui/` to `.gitignore`. Delete the stray root `book_cache.db`. | DATA-001 | **Done** (both ignored; no stray file) |
+| 0.4 | Add `pytest` to the dev dependencies. Create `tests/` with a DB smoke test. | NFR-006 | **Done** on `feat/NFR-006-pytest-smoke` (16 tests pass); pending merge to `main` |
+| 0.5 | Get `ruff check` and `ruff format --check` passing. CI green. | NFR-006 | **Partial**: both ruff checks pass on `feat/NFR-006-pytest-smoke`; CI on `main` is still **red** (lint step) until that branch merges |
+| 0.6 | **Decide OD-8**, then add `LICENSE` with `© 2026 Gabriel Geissler`, the SPDX field in `pyproject.toml`, and a README footer. | LIC-001, LIC-002 | Open (no `LICENSE`, no SPDX field) |
+| 0.7 | Merge `de-translation` → `main`. Delete the merged remote branches `book-search` and `translation`. | GUIDELINES §3 | **Partial**: merge done (PR #2); remote branches `book-search` and `translation` still exist |
+| 0.8 | Replace "Future Ideas" in the README with a link to this roadmap. | GUIDELINES §1 | **Done** (`b1adeaf`, README §Roadmap) |
+| 0.9 | **Decide OD-2 (now including the wishlist model), OD-3 and OD-7.** | URS §4 | Open (not in DECISIONS.md) |
 
 **Exit criteria**
 - [ ] A fresh clone of `main` → `uv sync` → `uv run hollowshelf` works
@@ -169,3 +169,4 @@ Nothing here gets built before v1.0 unless it is promoted through the scope gate
 | — | Other scanner inputs besides the webcam (you said "webcam *for now*") | 2026-11-14 |
 | — | **Maybe: scraper-type sources** (Amazon, Goodreads, Kobo, Moly, Biblio, …). Promoting one needs a decision on terms of service, breakage and maintenance cost. | 2026-11-14 (D-016) |
 | — | Other sources evaluated and parked (Apple/iTunes, WorldCat, Libris, BnF, DNB, ISBNPlus, paid APIs); see [notes/metadata-sources.md](notes/metadata-sources.md) | 2026-11-14 |
+| — | **Upgrade to NiceGUI 4.x.** A resolve during task 0.4 pulled 4.0.0 in unasked, so `nicegui` is pinned `<4` in `pyproject.toml`. 4.0 is a major rewrite: promote this only with time to re-verify every page. Natural home is M5 (UI-005). | 2026-11-14 (task 0.4) |
