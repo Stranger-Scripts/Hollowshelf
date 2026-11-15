@@ -12,12 +12,12 @@ from pathlib import Path
 
 import pytest
 
-from hollowshelf.config import SCHEMA_PATH
+from hollowshelf.config import schema_sql
 from hollowshelf.db import Database
 
 
 @pytest.fixture
 def db(tmp_path: Path) -> Iterator[Database]:
-    database = Database(tmp_path / "library.db", SCHEMA_PATH)
+    database = Database(tmp_path / "library.db", schema_sql())
     yield database
     database.close()

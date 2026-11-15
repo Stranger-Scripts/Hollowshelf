@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from nicegui import ui
 
-from .. import state
+from .. import config, state
+from ..db import Database, copy_database
 from ..i18n import _, ngettext
 from . import common
 
@@ -24,8 +25,43 @@ def _to_row(book: dict, fmts: dict, stats: dict) -> dict:
     }
 
 
+def _offer_legacy_import() -> None:
+    """One-time offer (DATA-001): import a pre-existing `<repo>/data/library.db`."""
+    legacy = state.pending_legacy_import
+    if not legacy:
+        return
+
+    def _do_import() -> None:
+        state.db.close()
+        copy_database(legacy, config.db_path())
+        state.db = Database(config.db_path(), config.schema_sql())
+        state.pending_legacy_import = None
+        dialog.close()
+        ui.notify(_("Library imported."))
+        ui.navigate.reload()
+
+    def _skip() -> None:
+        state.pending_legacy_import = None
+        dialog.close()
+
+    with ui.dialog() as dialog, ui.card():
+        ui.label(_("Existing library found")).classes("text-lg font-bold")
+        ui.label(
+            _(
+                "A library from an earlier version was found at {path}. "
+                "Import it into the new data directory ({data_dir})? "
+                "The original file is left untouched."
+            ).format(path=legacy, data_dir=config.data_dir())
+        )
+        with ui.row().classes("w-full justify-end"):
+            ui.button(_("Start fresh"), on_click=_skip).props("flat")
+            ui.button(_("Import"), on_click=_do_import)
+    dialog.open()
+
+
 def render() -> None:
     common.header("library")
+    _offer_legacy_import()
     if not common.ensure_profile():
         return
 

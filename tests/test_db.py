@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from hollowshelf.config import SCHEMA_PATH
+from hollowshelf.config import schema_sql
 from hollowshelf.db import Database
 
 BOOK = {
@@ -33,7 +33,7 @@ BOOK = {
 
 # ----------------------------------------------------------------- setup
 def test_fresh_database_initialises_schema(tmp_path: Path) -> None:
-    db = Database(tmp_path / "nested" / "library.db", SCHEMA_PATH)
+    db = Database(tmp_path / "nested" / "library.db", schema_sql())
     try:
         tables = {
             row["name"]
@@ -49,11 +49,11 @@ def test_fresh_database_initialises_schema(tmp_path: Path) -> None:
 
 def test_reopening_keeps_existing_data(tmp_path: Path) -> None:
     path = tmp_path / "library.db"
-    first = Database(path, SCHEMA_PATH)
+    first = Database(path, schema_sql())
     book_id = first.create_book(BOOK)
     first.close()
 
-    second = Database(path, SCHEMA_PATH)
+    second = Database(path, schema_sql())
     try:
         assert second.get_book(book_id) is not None
     finally:

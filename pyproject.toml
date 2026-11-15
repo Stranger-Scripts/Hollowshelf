@@ -10,12 +10,13 @@ description = "A personal book library, built with NiceGUI."
 dependencies = [
     "nicegui>=3.19.0,<4", # 4.0 is a major rewrite; upgrade deliberately, not by resolve
     "httpx>=0.27",
+    "platformdirs>=4.3",
     "pywebview>=6.2 ; sys_platform != 'linux'", # Win -> pythonnet/WebView2, macOS -> pyobjc, auto
     "pywebview[qt6]>=6.2 ; sys_platform == 'linux'", # Linux -> PyQt6 + WebEngine
 ]
 
 [project.scripts]
-hollowshelf = "hollowshelf.app:main"
+hollowshelf = "hollowshelf.cli:main"
 
 [build-system]
 requires = ["setuptools>=77"] # >=77 for the PEP 639 SPDX license field
@@ -25,7 +26,11 @@ build-backend = "setuptools.build_meta"
 where = ["src"]
 
 [tool.setuptools.package-data]
-hollowshelf = ["locales/*/LC_MESSAGES/*.mo", "locales/*/LC_MESSAGES/*.po"]
+hollowshelf = [
+    "collection_schema.sql",
+    "locales/*/LC_MESSAGES/*.mo",
+    "locales/*/LC_MESSAGES/*.po",
+]
 
 [dependency-groups]
 dev = [

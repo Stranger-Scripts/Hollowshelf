@@ -318,7 +318,7 @@ Pri **M** · M1 · Status `Impl.` · Verify T
 
 **DATA-001: Per-user data locations, outside the project** *(amended in v0.2)*
 *As the owner, I want my library and settings stored in the proper OS user directories, never inside the source tree, on both Linux and Windows.*
-Pri **M** · M1 · Status `Open` (today everything is relative to the repo root) · Verify T (Linux + Windows CI)
+Pri **M** · M1 · Status `Partial` (implemented and tested on Linux; `Verified` needs the Windows CI leg from NFR-004) · Verify T (Linux + Windows CI)
 - Paths are resolved with `platformdirs`, never hard-coded:
 
   | What | Linux (XDG) | Windows |

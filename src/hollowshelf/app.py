@@ -28,8 +28,13 @@ def _register_pages() -> None:
 
 
 def main() -> None:
-    state.db = Database(config.DB_PATH, config.SCHEMA_PATH)
-    app.on_shutdown(state.db.close)
+    # The legacy-import offer (DATA-001) only makes sense on a first start:
+    # the check has to run before Database() creates the new file.
+    if not config.db_path().exists():
+        state.pending_legacy_import = config.legacy_db_path()
+    state.db = Database(config.db_path(), config.schema_sql())
+    # Late-bound on purpose: the legacy import (browse.py) swaps state.db.
+    app.on_shutdown(lambda: state.db.close())
     _register_pages()
     ui.run(
         native=True,

@@ -6,6 +6,7 @@ Open Library User-Agent always carries the address the user entered.
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Optional, cast
 
 from . import config
@@ -16,6 +17,10 @@ from .db import Database
 # the `state.db.…` call sites stay clean; touching it earlier is a programming
 # error, and the cast keeps that honest for ruff and pyrefly.
 db: Database = cast("Database", None)
+
+# Set by app.main() on a first start when a pre-DATA-001 `<repo>/data/library.db`
+# exists; the library page then offers a one-time import.
+pending_legacy_import: Optional[Path] = None
 
 _client: Optional[BookClient] = None
 _client_signature: Optional[tuple] = None
@@ -40,7 +45,7 @@ def get_client() -> BookClient:
         if _client is not None:
             _client.close()
         _client = BookClient(
-            cache_path=str(config.CACHE_PATH),
+            cache_path=str(config.cache_path()),
             app_name=config.APP_NAME,
             app_version=config.APP_VERSION,
             contact=contact,
