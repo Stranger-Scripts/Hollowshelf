@@ -70,12 +70,12 @@ These block or shape requirements. Each one should end up in DECISIONS.md.
 | ID   | Question | Affects | Needed by |
 |------|----------|---------|-----------|
 | OD-1 | ~~Linux only or all three?~~ **Linux + Windows decided (D-012).** Still open: macOS — in or out for v1.0? | NFR-004, REL-001 | M4 |
-| OD-2 | Same title in several formats, **and now the wishlist**: keep the flat model and add an `ownership` column (`owned` / `wishlist`), or split into `work` + `copy`, where a wishlist entry is simply a work with no copy? A split is cleaner for wishlist→owned and for duplicates, but it costs more to migrate, and that cost grows with every row entered. | CAT-*, WISH-*, DATA-002 | **M1 start** |
-| OD-3 | `book.review` and journal entries with `entry_type='review'` overlap. Keep both? If so, what is each one for? | REV-001, REV-002 | M1 |
+| OD-2 | ~~Flat model + `ownership` column, or a `work` + `copy` split?~~ **Work/copy split decided (D-018, supersedes D-008).** A wishlist entry is a work with no copy. The split lands at M1 start, while the DB holds only test data. | CAT-*, WISH-*, DATA-002 | ~~M1 start~~ done |
+| OD-3 | ~~`book.review` and journal entries with `entry_type='review'` overlap. Keep both?~~ **Both kept, with defined roles (D-019).** The work's `review` is the canonical, FTS-indexed one; journal `review` entries are dated per-read-through reviews. | REV-001, REV-002 | ~~M1~~ done |
 | OD-4 | German search quality: the `porter` tokenizer is English-only. Drop it, keep it, or run per-language indexes? | SRCH-004 | M3 |
 | OD-5 | Covers: hot-link the URL (breaks offline, see NFR-001), or cache images locally? | CAT-008, NFR-001 | M3 |
 | OD-6 | Distribution for v1.0: `uv tool install git+…`, a frozen binary (`nicegui-pack`/PyInstaller), or both? This decides what the release pipeline builds (REL-004). | REL-001, REL-004 | M4 |
-| OD-7 | Performance targets (proposed, NFR-003 and LKP-007): confirm or adjust the numbers. | NFR-003, LKP-007 | M1 |
+| OD-7 | ~~Performance targets (proposed, NFR-003 and LKP-007): confirm or adjust the numbers.~~ **Confirmed as proposed (D-020).** | NFR-003, LKP-007 | ~~M1~~ done |
 | OD-8 | ~~License: MIT / Apache-2.0 vs. GPL-3.0?~~ **MIT decided (D-017).** Linux binaries that bundle PyQt6 (GPL-3.0) ship under GPL terms as a whole. | LIC-001…003, OD-6 | ~~M0~~ done |
 | OD-9 | *Source set decided (D-016).* Still open: the default **priority order** for merging (e.g. Open Library > Google Books > ISFDB > Hardcover), and whether ISFDB should rank higher for speculative fiction. | LKP-001, LKP-008 | M2 |
 | OD-10 | API key storage: plaintext in the DB `settings` table (current state for Google; simple, but every backup then contains the key) vs. the OS keyring (`keyring`: Windows Credential Manager / Secret Service; needs a running secret service on Linux). | LKP-009 | M2 |
@@ -95,7 +95,7 @@ These block or shape requirements. Each one should end up in DECISIONS.md.
   - `Blocked`: an external constraint prevents it
   - `Withdrawn`: no longer required
 - **Verify:** `T` = automated test · `M` = manual check, recorded in the PR
-- *Status as of 2026-11-15, taken from `main` @ `e84a81c`. The only tests so far cover the DB layer (M0 task 0.4), so nothing else is `Verified`.*
+- *Status as of 2026-11-15, taken from `main` @ `3cbff41`. The only tests so far cover the DB layer (M0 task 0.4), so nothing else is `Verified`.*
 
 ---
 
@@ -155,7 +155,7 @@ Pri **S** · M1 · Status `Open` · Verify T
 
 **CAT-010: Duplicate warning**
 *As the owner, I want a warning before I add something I already own or already have on my wishlist.*
-Pri **S** · M2 · Status `Open` · Verify T · *Depends on OD-2*
+Pri **S** · M2 · Status `Open` · Verify T · *Data model per D-018*
 - Saving warns when an existing item (owned or wishlist) has the same ISBN-13, or the same title + format. The user can still save.
 - A scan (SCAN-001) of an ISBN that's already in the catalog shows the existing item instead of an empty form.
 
@@ -163,7 +163,7 @@ Pri **S** · M2 · Status `Open` · Verify T · *Depends on OD-2*
 
 **WISH-001: Add to wishlist**
 *As the owner, I want to note books I'd like to own, using the same lookup/scan flow as for owned items.*
-Pri **S** · M2 · Status `Open` · Verify T · *Depends on OD-2*
+Pri **S** · M2 · Status `Open` · Verify T · *Data model per D-018 (a work with no copy)*
 - A wishlist entry can be created by hand, from a lookup result, or from a scan.
 - Location and acquired date aren't required for wishlist entries.
 
@@ -222,7 +222,7 @@ Pri **M** · M1 · Status `Open` · Verify T (benchmark script) + M
 - Each provider has its own timeout, and one slow or failing provider never blocks the others' results.
 - Results appear progressively as each provider responds.
 - Result cards use small cover thumbnails.
-- *Target (proposed, OD-7):* a cold ISBN lookup shows its first result in ≤ 3 s at the median on the dev machine and network. A warm (cached) lookup takes ≤ 200 ms.
+- *Target (confirmed, D-020):* a cold ISBN lookup shows its first result in ≤ 3 s at the median on the dev machine and network. A warm (cached) lookup takes ≤ 200 ms.
 
 **LKP-008: Source registry and settings** *(new)*
 *As the owner, I want to see every available source and choose which ones are used.*
@@ -308,7 +308,7 @@ Pri **M** · M1 · Status `Impl.` · Verify T
 
 **REV-001: Markdown review**
 *As the owner, I want to write a review in markdown with a live preview.*
-Pri **M** · M1 · Status `Impl.` · Verify M · *Depends on OD-3*
+Pri **M** · M1 · Status `Impl.` · Verify M · *Roles per D-019: this is the single canonical review*
 
 **REV-002: Reading journal**
 *As the owner, I want dated entries per item (note, review, quote, progress) that build up over time.*
@@ -430,7 +430,7 @@ Pri **M** · M1 · Status `Open` · Verify T
 |---------|-------------|-----|----|--------|--------|
 | NFR-001 | **Offline-first:** every function except lookup and the update check works with no network. Startup doesn't wait on the network. | M | M1 | Partial (covers, OD-5) | M |
 | NFR-002 | **Privacy** *(amended)*: the only outbound traffic is (a) lookup queries to **enabled** providers, with the configured User-Agent, and (b) the update check, if enabled. No telemetry. | M | M1 | Impl. (a) | M |
-| NFR-003 | **Performance (proposed, OD-7):** with 5,000 items, the grid loads in under 1 s and search returns in under 200 ms on the dev machine. | S | M1 | Open | T (benchmark) |
+| NFR-003 | **Performance (confirmed, D-020):** with 5,000 items, the grid loads in under 1 s and search returns in under 200 ms on the dev machine. | S | M1 | Open | T (benchmark) |
 | NFR-004 | **Platforms** *(amended, D-012)*: Linux and Windows 10/11 are supported; macOS depends on OD-1. CI runs on `ubuntu-latest` and `windows-latest` **from M1**. Each release gets a manual smoke test on Windows (window opens via WebView2, CRUD, lookup, scan, backup). | M | M1 (CI) / M4 (full) | Partial (Linux only) | T + M |
 | NFR-005 | **Zero ops:** no server process, no external service that has to be running, no config needed to start. | M | M1 | Impl. | M |
 | NFR-006 | **Maintainability:** `ruff check` and `ruff format --check` pass. The DB layer and the API parsers have automated tests. CI is green on `main`. | M | M0 | `Partial` (ruff green, DB layer tested, CI green on `main`; **API parser tests outstanding**) | T |

@@ -2,11 +2,11 @@
 
 > **When** each requirement in [URS.md](URS.md) gets done. One milestone is
 > active at a time. A milestone closes when its exit criteria hold, not on a
-> date. Status as of 2026-11-15, checked on `main` @ `e84a81c` (v0.3 of the plan).
+> date. Status as of 2026-11-15, checked on `main` @ `3cbff41` (v0.4 of the plan).
 
 ```
 M0 Stabilise ─► M1 Trustworthy core ─► M2 Capture & sources ─► M3 Daily driver ─► M4 Distribution ─► M5 UI overhaul
-   (now)           v0.2.0                 v0.3.0                  v0.4.0              v0.9.0              v1.0.0
+  (done)        (now) → v0.2.0          v0.3.0                  v0.4.0              v0.9.0              v1.0.0
 ```
 
 **Rationale for this order:**
@@ -18,7 +18,7 @@ M2 and M3 can be swapped if export and restore feel more urgent than scanning.
 
 ---
 
-## M0: Stabilise *(active)*
+## M0: Stabilise *(done 2026-11-15)*
 
 **Goal:** a fresh clone of `main` installs, runs and passes CI. The repo is licensed.
 
@@ -38,17 +38,17 @@ M2 and M3 can be swapped if export and restore feel more urgent than scanning.
 | 0.6 | **Decide OD-8**, then add `LICENSE` with `© 2026 Gabriel Geissler`, the SPDX field in `pyproject.toml`, and a README footer. | LIC-001, LIC-002 | **Done** (MIT, D-017) |
 | 0.7 | Merge `de-translation` → `main`. Delete the merged remote branches `book-search` and `translation`. | GUIDELINES §3 | **Done** (merged in PR #2; `main` is the only remote branch) |
 | 0.8 | Replace "Future Ideas" in the README with a link to this roadmap. | GUIDELINES §1 | **Done** (`b1adeaf`, README §Roadmap) |
-| 0.9 | **Decide OD-2 (now including the wishlist model), OD-3 and OD-7.** | URS §4 | Open (not in DECISIONS.md) |
+| 0.9 | **Decide OD-2 (now including the wishlist model), OD-3 and OD-7.** | URS §4 | **Done** (D-018 work/copy split, D-019 review roles, D-020 targets confirmed) |
 
 **Exit criteria**
-- [ ] A fresh clone of `main` → `uv sync` → `uv run hollowshelf` works
+- [x] A fresh clone of `main` → `uv sync` → `uv run hollowshelf` works (verified 2026-11-15 @ `3cbff41`: sync clean, 16 tests pass, app serves on :8003 and opens the native window)
 - [x] CI green on `main`; only `main` exists as a long-lived branch
 - [x] LICENSE in place (MIT, D-017)
-- [ ] OD-2, OD-3 and OD-7 are recorded as decisions (OD-8 done: D-017)
+- [x] OD-2, OD-3 and OD-7 are recorded as decisions (D-018…D-020; OD-8: D-017)
 
 ---
 
-## M1: Trustworthy core → v0.2.0
+## M1: Trustworthy core *(active)* → v0.2.0
 
 **Goal:** I can enter my real library on Linux or Windows and trust that it won't be lost, corrupted, or stored in the wrong place. Lookups are fast.
 
@@ -61,11 +61,12 @@ M2 and M3 can be swapped if export and restore feel more urgent than scanning.
 
 **Proposed order:**
 1. DATA-001: everything else writes files, so paths come first.
-2. Windows CI.
-3. DATA-003, then DATA-002, since migrations rely on backups.
-4. LKP-007: measure first with `scripts/bench_lookup.py`, then change.
-5. Tests for the existing features.
-6. The rest.
+2. **The D-018 work/copy schema split**, while the DB still holds only test data — every later feature (wishlist, duplicates, migrations) builds on the new shape.
+3. Windows CI.
+4. DATA-003, then DATA-002, since migrations rely on backups.
+5. LKP-007: measure first with `scripts/bench_lookup.py`, then change.
+6. Tests for the existing features.
+7. The rest.
 
 **Exit criteria**
 - [ ] Every M1 **Must** is `Verified`
@@ -87,7 +88,7 @@ M2 and M3 can be swapped if export and restore feel more urgent than scanning.
 | LKP-009 Key handling | needs OD-10 |
 | LKP-011 Hardcover (opt-in token) | |
 | LKP-015 ISFDB (keyless) | check the data licence first |
-| WISH-001…004 Wishlist | data model from OD-2 |
+| WISH-001…004 Wishlist | data model from D-018 (a work with no copy) |
 | CAT-010 Duplicate warning | needed once scanning makes double entry easy |
 | SCAN-001…004 Webcam scanning | **time-boxed spike first** (OD-11) |
 
